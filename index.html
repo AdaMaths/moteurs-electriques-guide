@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MotoGuide — Tout comprendre sur les moteurs électriques</title>
+<meta name="description" content="Guide didactique complet pour maintenanciers et étudiants : moteurs synchrones, asynchrones triphasés et monophasés.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F7FA;
+  --bg-alt:#EBF1F9;
+  --panel:#FFFFFF;
+  --navy:#0B2E4F;
+  --navy-2:#123A63;
+  --blue:#1E6FD9;
+  --blue-light:#5B9BF0;
+  --copper:#E8873A;
+  --copper-dark:#C1651C;
+  --ink:#16233B;
+  --ink-soft:#516079;
+  --line:#DCE4EF;
+  --success:#2E9E5B;
+  --success-bg:#E7F6EC;
+  --danger:#D64545;
+  --danger-bg:#FBEAEA;
+  --radius:12px;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --header-h:64px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth; scroll-padding-top:calc(var(--header-h) + 14px);}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--font-body); line-height:1.6; font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{max-width:100%; display:block;}
+h1,h2,h3,h4{font-family:var(--font-display); color:var(--navy); margin:0 0 .5em; line-height:1.2;}
+a{color:var(--blue);}
+p{margin:0 0 1em;}
+.container{max-width:1120px; margin:0 auto; padding:0 20px;}
+.eyebrow{
+  font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.12em;
+  font-size:.72rem; color:var(--copper-dark); font-weight:700; display:block; margin-bottom:.6em;
+}
+code, .mono{font-family:var(--font-mono);}
+.formula{
+  font-family:var(--font-mono); background:var(--navy); color:#EAF2FF; padding:14px 18px;
+  border-radius:8px; display:inline-block; margin:.4em 0; font-size:1.02rem; border-left:4px solid var(--copper);
+}
+button{font-family:var(--font-body); cursor:pointer;}
+
+/* ---------- HEADER / NAV ---------- */
+header.site{
+  position:sticky; top:0; z-index:1000; background:rgba(245,247,250,.92);
+  backdrop-filter:blur(8px); border-bottom:1px solid var(--line); height:var(--header-h);
+}
+.nav-wrap{display:flex; align-items:center; justify-content:space-between; height:var(--header-h); gap:14px;}
+.brand{display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; color:var(--navy); font-size:1.15rem; text-decoration:none; flex-shrink:0;}
+.brand .dot{width:12px; height:12px; border-radius:50%; background:conic-gradient(var(--blue) 0 33%, var(--copper) 33% 66%, var(--navy) 66% 100%); animation:spin 3s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media (prefers-reduced-motion:reduce){.brand .dot{animation:none;}}
+
+nav.primary{display:none;}
+@media (min-width:960px){
+  nav.primary{display:flex; align-items:center; gap:2px; flex:1; justify-content:center;}
+  .nav-item{position:relative;}
+  .nav-link{
+    display:block; padding:10px 12px; color:var(--navy); text-decoration:none; font-weight:600;
+    font-size:.9rem; border-radius:8px; white-space:nowrap;
+  }
+  .nav-link:hover, .nav-item:hover .nav-link{background:var(--bg-alt); color:var(--blue);}
+  .submenu{
+    display:none; position:absolute; top:100%; left:0; background:var(--panel); border:1px solid var(--line);
+    border-radius:10px; box-shadow:0 12px 28px rgba(11,46,79,.14); min-width:220px; padding:6px; margin-top:6px;
+  }
+  .nav-item:hover .submenu{display:block;}
+  .submenu a{display:block; padding:9px 12px; color:var(--ink); text-decoration:none; border-radius:6px; font-size:.87rem;}
+  .submenu a:hover{background:var(--bg-alt); color:var(--blue);}
+}
+.header-search{display:none;}
+@media (min-width:960px){
+  .header-search{display:flex; align-items:center; position:relative; flex-shrink:0;}
+  .header-search input{
+    width:190px; padding:8px 12px 8px 32px; border:1px solid var(--line); border-radius:20px;
+    font-size:.82rem; font-family:var(--font-body); background:var(--bg-alt);
+  }
+  .header-search svg{position:absolute; left:10px; width:15px; height:15px; opacity:.5;}
+}
+.burger{
+  width:40px; height:40px; border:1px solid var(--line); background:var(--panel); border-radius:8px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+@media (min-width:960px){.burger{display:none;}}
+.burger span{display:block; width:18px; height:2px; background:var(--navy); position:relative;}
+.burger span::before,.burger span::after{content:""; position:absolute; width:18px; height:2px; background:var(--navy); left:0;}
+.burger span::before{top:-6px;} .burger span::after{top:6px;}
+
+/* Mobile drawer */
+.mobile-menu{
+  display:none; position:fixed; inset:var(--header-h) 0 0 0; background:var(--bg); z-index:999;
+  overflow-y:auto; padding:16px 20px 40px;
+}
+.mobile-menu.open{display:block;}
+.mobile-menu .header-search{display:flex; margin-bottom:16px; width:100%;}
+.mobile-menu .header-search input{width:100%; padding:11px 14px 11px 36px; border-radius:10px;}
+.mobile-menu .header-search svg{left:12px;}
+.m-item{border-bottom:1px solid var(--line);}
+.m-toggle{
+  display:flex; justify-content:space-between; align-items:center; width:100%; background:none; border:none;
+  padding:14px 4px; font-family:var(--font-display); font-weight:700; font-size:1.02rem; color:var(--navy);
+}
+.m-toggle svg{transition:transform .2s;}
+.m-item.open .m-toggle svg{transform:rotate(180deg);}
+.m-sub{display:none; padding:0 4px 12px 12px;}
+.m-item.open .m-sub{display:block;}
+.m-sub a{display:block; padding:8px 0; color:var(--ink-soft); text-decoration:none; font-size:.92rem; border-left:2px solid var(--line); padding-left:12px;}
+.m-sub a:hover{color:var(--blue); border-color:var(--blue);}
+.m-item > .m-toggle.leaf{color:var(--navy);}
+
+/* search results */
+.search-results{position:absolute; top:110%; left:0; right:0; background:var(--panel); border:1px solid var(--line); border-radius:10px; box-shadow:0 14px 30px rgba(11,46,79,.16); max-height:60vh; overflow-y:auto; z-index:1200;}
+.search-results a{display:block; padding:10px 14px; text-decoration:none; border-bottom:1px solid var(--line); color:var(--ink);}
+.search-results a:last-child{border-bottom:none;}
+.search-results a b{color:var(--blue); display:block; font-family:var(--font-display); font-size:.9rem;}
+.search-results a span{font-size:.78rem; color:var(--ink-soft);}
+.search-results .none{padding:14px; color:var(--ink-soft); font-size:.85rem;}
+.mobile-menu .search-results{position:static; margin-bottom:16px; box-shadow:none;}
+
+/* ---------- HERO ---------- */
+.hero{padding:56px 0 40px; background:linear-gradient(180deg, var(--bg-alt), var(--bg));}
+.hero-grid{display:grid; gap:34px; align-items:center;}
+@media (min-width:900px){.hero-grid{grid-template-columns:1.1fr .9fr;}}
+.hero h1{font-size:clamp(1.9rem,4.5vw,3rem); margin-bottom:.3em;}
+.hero h1 span{color:var(--copper);}
+.hero p.lead{font-size:1.05rem; color:var(--ink-soft); max-width:52ch;}
+.audience-pills{display:flex; gap:8px; flex-wrap:wrap; margin:18px 0 22px;}
+.pill{background:var(--panel); border:1px solid var(--line); padding:7px 14px; border-radius:20px; font-size:.82rem; font-weight:600; color:var(--navy);}
+.hero-search{position:relative; max-width:480px;}
+.hero-search input{
+  width:100%; padding:15px 18px 15px 46px; border-radius:12px; border:1px solid var(--line);
+  font-size:1rem; background:var(--panel); box-shadow:0 4px 14px rgba(11,46,79,.06);
+}
+.hero-search svg{position:absolute; left:16px; top:50%; transform:translateY(-50%); width:19px; height:19px; opacity:.5;}
+
+.field-diagram{background:var(--navy); border-radius:20px; padding:26px; position:relative; overflow:hidden;}
+.field-diagram::after{content:"champ tournant"; position:absolute; bottom:14px; right:18px; font-family:var(--font-mono); font-size:.68rem; color:#89A9D4; letter-spacing:.08em; text-transform:uppercase;}
+.field-diagram svg{width:100%; height:auto;}
+.rot-vector{transform-origin:150px 150px; animation:rot 4s linear infinite;}
+@keyframes rot{to{transform:rotate(360deg);}}
+@media (prefers-reduced-motion:reduce){.rot-vector{animation:none;}}
+
+.quicknav{display:grid; gap:12px; grid-template-columns:repeat(2,1fr); margin-top:38px;}
+@media (min-width:700px){.quicknav{grid-template-columns:repeat(5,1fr);}}
+.qn-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 12px; text-decoration:none; text-align:center; transition:.15s;}
+.qn-card:hover{border-color:var(--blue); transform:translateY(-2px);}
+.qn-card .num{font-family:var(--font-mono); color:var(--copper); font-size:.75rem; font-weight:700;}
+.qn-card .lbl{display:block; margin-top:4px; font-size:.82rem; font-weight:700; color:var(--navy);}
+
+/* ---------- SECTIONS ---------- */
+section.block{padding:56px 0; border-top:1px solid var(--line); scroll-margin-top:calc(var(--header-h) + 10px);}
+section.block:nth-of-type(even){background:var(--bg-alt);}
+.block h2{font-size:clamp(1.5rem,3vw,2rem);}
+.block .kicker{color:var(--ink-soft); max-width:70ch; margin-bottom:28px; font-size:1rem;}
+.subsection{margin-top:36px;}
+.subsection h3{font-size:1.2rem; display:flex; align-items:center; gap:8px;}
+.subsection h3::before{content:""; width:8px; height:8px; background:var(--copper); border-radius:2px; flex-shrink:0;}
+
+/* card / grid layout helpers */
+.grid-2{display:grid; gap:20px;}
+@media (min-width:800px){.grid-2{grid-template-columns:1fr 1fr;}}
+.grid-3{display:grid; gap:16px;}
+@media (min-width:700px){.grid-3{grid-template-columns:repeat(3,1fr);}}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:20px;}
+.card h4{font-size:1rem; margin-bottom:.4em;}
+.diagram-card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:18px; text-align:center;}
+.diagram-card figcaption{font-size:.8rem; color:var(--ink-soft); margin-top:10px;}
+
+/* tables */
+.table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--panel);}
+table{width:100%; border-collapse:collapse; min-width:640px; font-size:.9rem;}
+th,td{padding:12px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top;}
+thead th{background:var(--navy); color:#fff; font-family:var(--font-display); font-weight:600; font-size:.82rem; text-transform:uppercase; letter-spacing:.03em;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--bg-alt);}
+
+/* symptom/cause lists */
+.diag-list{list-style:none; margin:0; padding:0; display:grid; gap:10px;}
+.diag-list li{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--copper); border-radius:8px; padding:12px 14px; font-size:.92rem;}
+.diag-list.cause li{border-left-color:var(--blue);}
+.diag-list b{color:var(--navy); display:block; margin-bottom:2px; font-size:.88rem;}
+
+/* steps */
+.steps{counter-reset:step; list-style:none; margin:0; padding:0; display:grid; gap:14px;}
+.steps li{position:relative; padding-left:46px; min-height:32px;}
+.steps li::before{
+  counter-increment:step; content:counter(step); position:absolute; left:0; top:0; width:32px; height:32px;
+  background:var(--navy); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:700; font-size:.9rem;
+}
+.steps b{color:var(--navy);}
+
+/* badges */
+.badge{display:inline-block; padding:3px 10px; border-radius:20px; font-size:.72rem; font-weight:700; font-family:var(--font-mono);}
+.badge.blue{background:#E5EFFC; color:var(--blue);}
+.badge.orange{background:#FCEEE1; color:var(--copper-dark);}
+.badge.navy{background:#E4EAF2; color:var(--navy);}
+
+/* accordion glossary */
+details.gloss{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 16px; margin-bottom:8px;}
+details.gloss summary{font-weight:700; color:var(--navy); cursor:pointer; font-family:var(--font-display); font-size:.95rem;}
+details.gloss p{margin:.6em 0 0; color:var(--ink-soft); font-size:.9rem;}
+
+/* quiz */
+.quiz-q{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:20px; margin-bottom:16px;}
+.quiz-q p.q{font-weight:700; color:var(--navy); margin-bottom:12px; font-family:var(--font-display);}
+.quiz-opt{display:flex; gap:10px; align-items:flex-start; padding:9px 10px; border-radius:8px; margin-bottom:6px; border:1px solid transparent; cursor:pointer;}
+.quiz-opt:hover{background:var(--bg-alt);}
+.quiz-opt.correct{background:var(--success-bg); border-color:var(--success);}
+.quiz-opt.incorrect{background:var(--danger-bg); border-color:var(--danger);}
+.quiz-explain{display:none; margin-top:12px; padding:12px 14px; background:var(--bg-alt); border-radius:8px; font-size:.87rem; color:var(--ink-soft);}
+.quiz-explain.show{display:block;}
+#quizScore{font-family:var(--font-display); font-weight:700; color:var(--navy); margin-top:18px; font-size:1.1rem;}
+
+.btn{
+  display:inline-block; background:var(--copper); color:#fff; border:none; padding:12px 22px; border-radius:8px;
+  font-weight:700; font-size:.92rem; text-decoration:none;
+}
+.btn:hover{background:var(--copper-dark);}
+.btn.ghost{background:transparent; color:var(--navy); border:1px solid var(--line);}
+.btn.ghost:hover{border-color:var(--navy);}
+
+/* footer */
+footer.site{background:var(--navy); color:#CBDBF2; padding:44px 0 26px; margin-top:0;}
+footer.site h4{color:#fff; font-size:.95rem; margin-bottom:10px;}
+footer.site a{color:#CBDBF2; text-decoration:none;}
+footer.site a:hover{color:var(--copper);}
+.footer-grid{display:grid; gap:28px;}
+@media (min-width:800px){.footer-grid{grid-template-columns:2fr 1fr 1fr;}}
+.footer-bottom{border-top:1px solid #1E4A73; margin-top:32px; padding-top:18px; font-size:.8rem; color:#7E9CC1; display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between;}
+mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:2px;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="container nav-wrap">
+    <a href="#accueil" class="brand"><span class="dot"></span> MotoGuide</a>
+    <nav class="primary" aria-label="Navigation principale">
+      <div class="nav-item"><a class="nav-link" href="#accueil">Accueil</a></div>
+      <div class="nav-item"><a class="nav-link" href="#classification">Classification</a>
+        <div class="submenu">
+          <a href="#classification">Vue d'ensemble</a>
+          <a href="#tableau-comparatif">Tableau comparatif</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-link" href="#stator-rotor">Stator &amp; Rotor</a>
+        <div class="submenu">
+          <a href="#sr-triphase">Triphasé</a>
+          <a href="#sr-synchrone">Synchrone</a>
+          <a href="#sr-monophase">Monophasé</a>
+          <a href="#sr-entrefer">Entrefer</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-link" href="#fonctionnement">Fonctionnement</a>
+        <div class="submenu">
+          <a href="#f-champ">Champ tournant</a>
+          <a href="#f-glissement">Glissement</a>
+          <a href="#f-couple">Couple</a>
+          <a href="#f-mono">Moteur monophasé</a>
+          <a href="#f-sync">Moteur synchrone</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-link" href="#applications">Applications</a></div>
+      <div class="nav-item"><a class="nav-link" href="#pannes">Pannes</a></div>
+      <div class="nav-item"><a class="nav-link" href="#demontage">Démontage</a></div>
+      <div class="nav-item"><a class="nav-link" href="#bobinage">Bobinage</a></div>
+      <div class="nav-item"><a class="nav-link" href="#couplage">Couplage Y/Δ</a></div>
+      <div class="nav-item"><a class="nav-link" href="#savoir-plus">Savoir plus</a>
+        <div class="submenu">
+          <a href="#formules">Formules</a>
+          <a href="#plaque">Plaque signalétique</a>
+          <a href="#glossaire">Glossaire</a>
+          <a href="#quiz">Quiz</a>
+        </div>
+      </div>
+    </nav>
+    <div class="header-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchDesktop" placeholder="Rechercher…" autocomplete="off">
+      <div class="search-results" id="resultsDesktop" style="display:none;"></div>
+    </div>
+    <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu"><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="header-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchMobile" placeholder="Rechercher un mot-clé…" autocomplete="off">
+  </div>
+  <div class="search-results" id="resultsMobile" style="display:none;"></div>
+  <div id="mobileNavList"></div>
+</div>
+
+<main>
+<!-- ============ 1. ACCUEIL ============ -->
+<section id="accueil" class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">Guide de maintenance électromécanique</span>
+      <h1>Tout comprendre sur les <span>moteurs électriques</span></h1>
+      <p class="lead">Un site didactique conçu pour les maintenanciers et les étudiants : constitution, fonctionnement, pannes, bobinage et couplage des moteurs synchrones, asynchrones triphasés et monophasés — expliqués avec des schémas, des formules et des exemples chiffrés.</p>
+      <div class="audience-pills">
+        <span class="pill">🔧 Maintenanciers</span>
+        <span class="pill">🎓 Étudiants en électrotechnique</span>
+        <span class="pill">⚙️ Techniciens de chantier</span>
+      </div>
+      <div class="hero-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchHero" placeholder="Ex : glissement, condensateur, étoile-triangle…" autocomplete="off">
+        <div class="search-results" id="resultsHero" style="display:none;"></div>
+      </div>
+    </div>
+    <div class="field-diagram">
+      <svg viewBox="0 0 300 300">
+        <circle cx="150" cy="150" r="118" fill="none" stroke="#2A5488" stroke-width="14"/>
+        <circle cx="150" cy="150" r="118" fill="none" stroke="#3D6BA8" stroke-width="1" stroke-dasharray="2 6"/>
+        <g font-family="JetBrains Mono" font-size="13" fill="#89A9D4" text-anchor="middle" font-weight="700">
+          <text x="150" y="42">U</text>
+          <text x="252" y="205">V</text>
+          <text x="48" y="205">W</text>
+        </g>
+        <circle cx="150" cy="150" r="70" fill="#08213A" stroke="#3D6BA8" stroke-width="2"/>
+        <g stroke="#5B9BF0" stroke-width="4" stroke-linecap="round">
+          <line x1="150" y1="98" x2="150" y2="118"/>
+          <line x1="196" y1="176" x2="180" y2="166"/>
+          <line x1="104" y1="176" x2="120" y2="166"/>
+        </g>
+        <g class="rot-vector">
+          <line x1="150" y1="150" x2="150" y2="70" stroke="#E8873A" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="150" cy="70" r="7" fill="#E8873A"/>
+        </g>
+        <circle cx="150" cy="150" r="5" fill="#EAF2FF"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="quicknav">
+      <a class="qn-card" href="#classification"><span class="num">01</span><span class="lbl">Classification</span></a>
+      <a class="qn-card" href="#stator-rotor"><span class="num">02</span><span class="lbl">Stator &amp; Rotor</span></a>
+      <a class="qn-card" href="#fonctionnement"><span class="num">03</span><span class="lbl">Fonctionnement</span></a>
+      <a class="qn-card" href="#applications"><span class="num">04</span><span class="lbl">Applications</span></a>
+      <a class="qn-card" href="#pannes"><span class="num">05</span><span class="lbl">Pannes &amp; diagnostic</span></a>
+      <a class="qn-card" href="#demontage"><span class="num">06</span><span class="lbl">Démontage</span></a>
+      <a class="qn-card" href="#bobinage"><span class="num">07</span><span class="lbl">Bobinage</span></a>
+      <a class="qn-card" href="#couplage"><span class="num">08</span><span class="lbl">Couplage Y/Δ</span></a>
+      <a class="qn-card" href="#savoir-plus"><span class="num">09</span><span class="lbl">Formules &amp; quiz</span></a>
+      <a class="qn-card" href="#glossaire"><span class="num">10</span><span class="lbl">Glossaire</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. CLASSIFICATION ============ -->
+<section id="classification" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 01</span>
+    <h2>Classification complète des moteurs</h2>
+    <p class="kicker">Trois grandes familles se partagent le terrain industriel et domestique : le moteur synchrone, le moteur asynchrone (ou "à induction") — décliné en triphasé et monophasé — et le moteur universel, capable de fonctionner en courant continu ou alternatif.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h4>⚡ Moteur synchrone</h4>
+        <p>Le rotor tourne exactement à la vitesse du champ tournant (vitesse de synchronisme). Excitation par aimants permanents ou bobine alimentée en continu via bagues et balais.</p>
+        <span class="badge navy">Vitesse fixe = Ns</span>
+      </div>
+      <div class="card">
+        <h4>🔁 Moteur asynchrone triphasé</h4>
+        <p>Le plus répandu en industrie. Le rotor "glisse" légèrement par rapport au champ tournant ; c'est ce glissement qui induit le courant rotorique et crée le couple.</p>
+        <span class="badge blue">Robuste &amp; économique</span>
+      </div>
+      <div class="card">
+        <h4>🔌 Moteur asynchrone monophasé</h4>
+        <p>Utilisé sur réseau domestique. Nécessite un enroulement auxiliaire (souvent avec condensateur) pour démarrer, car un seul enroulement ne crée pas de champ tournant.</p>
+        <span class="badge orange">Électroménager</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Le moteur universel, un cas à part</h3>
+      <p>Le moteur universel (moteur série à collecteur) fonctionne indifféremment en courant continu ou alternatif basse fréquence. On le trouve dans les outils portatifs (perceuses, aspirateurs, mixeurs) grâce à son couple de démarrage élevé et sa vitesse ajustable, au prix d'une usure rapide des balais et d'un bruit électromagnétique plus important.</p>
+    </div>
+
+    <div class="subsection" id="tableau-comparatif">
+      <h3>Tableau comparatif</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Type</th><th>Alimentation</th><th>Vitesse</th><th>Couple de démarrage</th><th>Applications</th><th>Prix relatif</th><th>Maintenance</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Synchrone</b></td><td>Triphasé (ou monophasé pour petites puissances)</td><td>Fixe = Ns, indépendante de la charge</td><td>Faible seul (démarrage assisté nécessaire)</td><td>Alternateurs, servomoteurs, horlogerie, gros entraînements de levage</td><td>Élevé</td><td>Faible (aimants) à moyenne (bagues/balais)</td></tr>
+            <tr><td><b>Asynchrone triphasé (cage)</b></td><td>Triphasé 230/400 V, 400/690 V…</td><td>Légèrement &lt; Ns (glissement 2-6 %)</td><td>Bon à très bon</td><td>Pompes, ventilateurs, compresseurs, convoyeurs, machines-outils</td><td>Faible</td><td>Très faible (pas de balais)</td></tr>
+            <tr><td><b>Asynchrone triphasé (bobiné)</b></td><td>Triphasé</td><td>Réglable via résistances rotoriques</td><td>Excellent, réglable</td><td>Levage, broyeurs, applications à fort couple de démarrage</td><td>Élevé</td><td>Moyenne (bagues/balais)</td></tr>
+            <tr><td><b>Asynchrone monophasé</b></td><td>Monophasé 230 V</td><td>Légèrement &lt; Ns</td><td>Faible sans condensateur, correct avec</td><td>Électroménager, pompes domestiques, petits outils</td><td>Faible</td><td>Faible (surveiller le condensateur)</td></tr>
+            <tr><td><b>Universel</b></td><td>Continu ou alternatif</td><td>Très élevée, variable avec la charge</td><td>Très élevé</td><td>Outillage portatif, petit électroménager</td><td>Très faible</td><td>Moyenne (usure des balais/collecteur)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. STATOR ET ROTOR ============ -->
+<section id="stator-rotor" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 02</span>
+    <h2>Stator et rotor, détaillés pour chaque type</h2>
+    <p class="kicker">Tout moteur tournant est bâti autour du même duo : une partie fixe qui crée un champ magnétique (le stator) et une partie mobile qui subit ou suit ce champ (le rotor), séparées par un entrefer.</p>
+
+    <div class="subsection">
+      <h3>Le stator : socle commun à tous les moteurs</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Constitution</h4>
+          <ul>
+            <li><b>Carcasse</b> : enveloppe mécanique (fonte ou aluminium) qui supporte l'ensemble et évacue la chaleur (ailettes de refroidissement).</li>
+            <li><b>Tôles magnétiques (Fe-Si)</b> : empilées et isolées entre elles (vernis) pour limiter les pertes par courants de Foucault ; le silicium augmente la résistivité et réduit les pertes fer.</li>
+            <li><b>Encoches</b> : rainures découpées dans les tôles pour loger les conducteurs des enroulements.</li>
+            <li><b>Enroulements</b> : bobines de fil de cuivre émaillé insérées dans les encoches, connectées pour créer un champ magnétique tournant.</li>
+          </ul>
+        </div>
+        <figure class="diagram-card">
+          <svg viewBox="0 0 260 260">
+            <circle cx="130" cy="130" r="112" fill="none" stroke="#DCE4EF" stroke-width="26"/>
+            <circle cx="130" cy="130" r="112" fill="none" stroke="#0B2E4F" stroke-width="4"/>
+            <circle cx="130" cy="130" r="86" fill="none" stroke="#0B2E4F" stroke-width="2" stroke-dasharray="4 4"/>
+            <g fill="#1E6FD9">
+              <rect x="122" y="26" width="16" height="20" rx="2"/>
+              <rect x="122" y="214" width="16" height="20" rx="2"/>
+              <rect x="26" y="122" width="20" height="16" rx="2"/>
+              <rect x="214" y="122" width="20" height="16" rx="2"/>
+              <rect x="60" y="52" width="16" height="20" rx="2" transform="rotate(45 68 62)"/>
+              <rect x="184" y="52" width="16" height="20" rx="2" transform="rotate(-45 192 62)"/>
+              <rect x="60" y="208" width="16" height="20" rx="2" transform="rotate(-45 68 198)"/>
+              <rect x="184" y="208" width="16" height="20" rx="2" transform="rotate(45 192 198)"/>
+            </g>
+            <circle cx="130" cy="130" r="46" fill="#E8873A" opacity=".18"/>
+            <circle cx="130" cy="130" r="46" fill="none" stroke="#E8873A" stroke-width="2" stroke-dasharray="3 3"/>
+            <text x="130" y="135" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#C1651C">entrefer</text>
+          </svg>
+          <figcaption>Coupe schématique du stator : carcasse, tôles Fe-Si encochées et enroulements répartis autour de l'alésage.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="subsection" id="sr-triphase">
+      <h3>Stator triphasé : trois enroulements décalés de 120°</h3>
+      <p>Le stator triphasé loge trois enroulements identiques (U, V, W), géométriquement décalés de 120° les uns des autres. Alimentés par un réseau triphasé où les tensions sont elles-mêmes déphasées de 120° dans le temps, ils créent ensemble un champ magnétique unique dont le vecteur <b>tourne</b> à vitesse constante — c'est le champ tournant, principe fondateur de toute la machine tournante à courant alternatif.</p>
+    </div>
+
+    <div class="subsection" id="sr-synchrone">
+      <h3>Moteur synchrone : stator identique, rotor différent</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Rotor à aimants permanents</h4>
+          <p>Aimants (ferrite ou terres rares NdFeB) montés en surface ou noyés dans le rotor. Pas de courant rotorique à fournir, rendement élevé, mais coût plus élevé et démagnétisation possible en cas de surchauffe sévère ou de court-circuit brutal.</p>
+        </div>
+        <div class="card">
+          <h4>Rotor bobiné, à bagues et balais</h4>
+          <p>Un enroulement rotorique est alimenté en courant continu via deux bagues collectrices et des balais en carbone frottant sur ces bagues. L'intensité d'excitation permet de régler le facteur de puissance de la machine — un avantage industriel important pour les gros alternateurs et moteurs synchrones de forte puissance.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection" id="sr-monophase">
+      <h3>Moteur monophasé : enroulement principal + auxiliaire</h3>
+      <p>Un seul enroulement alimenté en monophasé ne produit qu'un champ <i>pulsant</i> (alternatif, non tournant) — le rotor reste immobile au démarrage. Pour créer un champ tournant au démarrage, le stator loge un second enroulement, l'<b>auxiliaire</b>, décalé d'environ 90° électriques par rapport au <b>principal</b>, et souvent mis en série avec un condensateur pour déphaser son courant.</p>
+      <div class="grid-2">
+        <figure class="diagram-card">
+          <svg viewBox="0 0 260 200">
+            <rect x="10" y="70" width="240" height="60" rx="8" fill="#EBF1F9" stroke="#DCE4EF"/>
+            <g stroke="#0B2E4F" stroke-width="3" fill="none">
+              <path d="M30 100 h40 M30 92 h40 M30 108 h40"/>
+            </g>
+            <text x="50" y="60" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#0B2E4F" font-weight="700">U1</text>
+            <text x="50" y="150" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#0B2E4F" font-weight="700">U2 (principal)</text>
+            <g stroke="#1E6FD9" stroke-width="3" fill="none">
+              <path d="M160 100 h40 M160 92 h40 M160 108 h40"/>
+            </g>
+            <text x="180" y="60" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1E6FD9" font-weight="700">Z1</text>
+            <text x="180" y="150" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1E6FD9" font-weight="700">Z2 (auxiliaire)</text>
+            <circle cx="220" cy="100" r="12" fill="none" stroke="#E8873A" stroke-width="3"/>
+            <line x1="215" y1="95" x2="225" y2="105" stroke="#E8873A" stroke-width="2"/>
+            <text x="220" y="130" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#C1651C">C</text>
+          </svg>
+          <figcaption>Schéma de principe : enroulement principal (U1-U2) et auxiliaire (Z1-Z2) en série avec un condensateur C.</figcaption>
+        </figure>
+        <div class="card">
+          <h4>Repérage des bornes</h4>
+          <p>La norme CEI 60034-8 identifie couramment l'enroulement principal par <span class="mono">U1-U2</span> et l'auxiliaire par <span class="mono">Z1-Z2</span> (certains fabricants utilisent d'autres repères comme <span class="mono">W2/V2</span> — toujours vérifier la plaque bornier et la notice du fabricant avant intervention).</p>
+          <p><b>Condensateur de démarrage</b> : forte capacité, débranché par un interrupteur centrifuge une fois le rotor lancé (~75 % de Ns).<br><b>Condensateur permanent</b> : capacité plus faible, reste connecté en fonctionnement pour améliorer le couple et le rendement.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Le rotor : trois technologies</h3>
+      <div class="grid-3">
+        <div class="card"><h4>🐿️ Rotor à cage d'écureuil</h4><p>Barres conductrices (cuivre ou aluminium coulé) logées dans des encoches rotoriques, court-circuitées à chaque extrémité par deux anneaux. Aucune connexion électrique externe : robuste, sans entretien, standard sur l'asynchrone triphasé industriel.</p></div>
+        <div class="card"><h4>💍 Rotor bobiné à bagues</h4><p>Enroulement triphasé logé dans le rotor, raccordé à des bagues collectrices sur lesquelles frottent des balais. Permet d'insérer des résistances rotoriques pour régler le couple et le courant de démarrage.</p></div>
+        <div class="card"><h4>🧲 Rotor à aimants permanents</h4><p>Propre aux moteurs synchrones modernes (souvent pilotés par variateur) : pas de courant rotorique, excellent rendement, utilisé en robotique et servomoteurs.</p></div>
+      </div>
+      <p style="margin-top:18px;">Le <b>glissement g</b> caractérise l'écart entre la vitesse du champ tournant et celle du rotor dans un moteur asynchrone — il est développé en détail dans la section <a href="#f-glissement">Fonctionnement</a>.</p>
+    </div>
+
+    <div class="subsection" id="sr-entrefer">
+      <h3>L'entrefer</h3>
+      <p>L'entrefer est le mince espace d'air séparant le stator du rotor. Il doit être le plus petit possible pour limiter le courant magnétisant nécessaire et maximiser le couple, tout en restant suffisant pour éviter tout frottement mécanique lors des dilatations thermiques ou de l'usure des roulements.</p>
+      <div class="grid-2">
+        <div class="card"><h4>Valeurs typiques</h4><p>De l'ordre de <b>0,3 à 1 mm</b> pour les petits moteurs (quelques kW), pouvant atteindre plusieurs millimètres sur les grosses machines industrielles ou les moteurs à rotor bobiné.</p></div>
+        <div class="card"><h4>Pourquoi c'est critique</h4><p>Un entrefer trop grand augmente le courant magnétisant et réduit le facteur de puissance ; un entrefer irrégulier (rotor décentré, roulement usé) provoque vibrations, bruit et points chauds.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. FONCTIONNEMENT ============ -->
+<section id="fonctionnement" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 03</span>
+    <h2>Fonctionnement</h2>
+    <p class="kicker">Comprendre un moteur, c'est comprendre trois idées qui s'enchaînent : le champ tournant, le glissement, et le couple qui en résulte.</p>
+
+    <div class="subsection" id="f-champ">
+      <h3>Le champ tournant</h3>
+      <p>Trois enroulements décalés dans l'espace de 120°, alimentés par des courants déphasés dans le temps de 120° (réseau triphasé), produisent chacun un champ pulsant. Leur somme vectorielle donne un champ résultant d'amplitude constante dont la direction <b>tourne</b> à vitesse constante — le champ tournant, qui balaie les conducteurs du rotor et y induit des courants par induction électromagnétique (loi de Lenz-Faraday).</p>
+      <div class="formula">Ns = 60 · f / p &nbsp;&nbsp;(tr/min)</div>
+      <p style="max-width:60ch;">avec <b>f</b> la fréquence du réseau (Hz) et <b>p</b> le nombre de <u>paires</u> de pôles du bobinage statorique (attention : pas le nombre de pôles total).</p>
+      <div class="table-wrap" style="margin-top:14px;">
+        <table>
+          <thead><tr><th>Paires de pôles (p)</th><th>Pôles</th><th>Ns à 50 Hz</th><th>Ns à 60 Hz</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>2</td><td>3000 tr/min</td><td>3600 tr/min</td></tr>
+            <tr><td>2</td><td>4</td><td>1500 tr/min</td><td>1800 tr/min</td></tr>
+            <tr><td>3</td><td>6</td><td>1000 tr/min</td><td>1200 tr/min</td></tr>
+            <tr><td>4</td><td>8</td><td>750 tr/min</td><td>900 tr/min</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection" id="f-glissement">
+      <h3>Le glissement</h3>
+      <p>Dans un moteur asynchrone, le rotor ne peut jamais atteindre exactement Ns : s'il le faisait, il n'y aurait plus de variation de flux perçue par le rotor, donc plus de courant induit, donc plus de couple. Il "glisse" toujours légèrement en retard.</p>
+      <div class="formula">g = (Ns − N) / Ns</div>
+      <div class="formula">N = Ns · (1 − g)</div>
+      <p style="max-width:60ch;">Le glissement nominal est typiquement de <b>2 à 6 %</b> selon la taille du moteur (plus faible sur les grosses machines).</p>
+      <div class="card" style="max-width:560px;">
+        <h4>Exemple chiffré</h4>
+        <p>Moteur 4 pôles (p = 2), réseau 50 Hz → Ns = 60×50/2 = <b>1500 tr/min</b>.<br>
+        Plaque signalétique indique N = 1450 tr/min →<br>
+        g = (1500 − 1450) / 1500 = <b>0,033 soit 3,3 %</b>.</p>
+      </div>
+    </div>
+
+    <div class="subsection" id="f-couple">
+      <h3>Le couple électromécanique</h3>
+      <div class="formula">C = P / ω</div>
+      <div class="formula">ω = 2π · N / 60 &nbsp;&nbsp;(rad/s)</div>
+      <p style="max-width:60ch;">avec <b>P</b> la puissance mécanique transmise à l'arbre (W), <b>ω</b> la vitesse angulaire (rad/s) et <b>C</b> le couple (N·m). Un moyen mnémotechnique très utilisé sur le terrain, quand P est en kW et N en tr/min :</p>
+      <div class="formula">C (N·m) ≈ 9550 · P (kW) / N (tr/min)</div>
+    </div>
+
+    <div class="subsection" id="f-mono">
+      <h3>Pourquoi le moteur monophasé ne démarre pas seul</h3>
+      <p>Alimenté par un seul enroulement, le stator monophasé produit un champ magnétique dont l'amplitude oscille mais dont la direction reste fixe (un champ "pulsant", décomposable en deux champs tournants d'amplitude égale et de sens opposés qui s'annulent au démarrage). Le rotor, s'il est à l'arrêt, ne "voit" donc aucune direction préférentielle de rotation — il ne démarre pas seul.</p>
+      <p>L'enroulement auxiliaire (voir section Stator/Rotor) déphasé par un condensateur crée une dissymétrie qui privilégie un des deux champs tournants, entraînant le rotor dans ce sens. <b>Pour inverser le sens de rotation</b>, il suffit d'inverser les connexions de l'enroulement auxiliaire (jamais celles du principal seul, sinon rien ne change).</p>
+    </div>
+
+    <div class="subsection" id="f-sync">
+      <h3>Le moteur synchrone en détail</h3>
+      <p>Contrairement à l'asynchrone, le rotor du moteur synchrone tourne <b>exactement</b> à la vitesse Ns, verrouillé magnétiquement sur le champ tournant (glissement nul en régime établi). Cette caractéristique en fait la référence pour les applications exigeant une vitesse rigoureusement constante.</p>
+      <ul>
+        <li><b>Démarrage</b> : un rotor synchrone ne peut pas démarrer seul sur un champ qui tourne déjà à pleine vitesse (inertie trop importante) — on utilise un enroulement amortisseur de type "cage" pour un démarrage asynchrone initial, ou un variateur de fréquence qui monte progressivement en fréquence depuis 0 Hz.</li>
+        <li><b>Excitation rotorique</b> : fournie soit par des aimants permanents (pas de réglage possible mais aucun entretien), soit par un courant continu injecté via bagues et balais (ou excitatrice sans balais), permettant de régler le facteur de puissance de la machine.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. APPLICATIONS ============ -->
+<section id="applications" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 04</span>
+    <h2>Où les trouve-t-on ?</h2>
+    <p class="kicker">Le choix d'une technologie de moteur dépend de la puissance nécessaire, du couple de démarrage requis et de la disponibilité du réseau (mono ou triphasé).</p>
+    <div class="grid-3">
+      <div class="card">
+        <h4>🏭 Triphasé — le pilier industriel</h4>
+        <p>Pompes centrifuges, ventilateurs industriels, compresseurs d'air, convoyeurs à bande, machines-outils (tours, fraiseuses), broyeurs et concasseurs, groupes hydrauliques.</p>
+      </div>
+      <div class="card">
+        <h4>🏠 Monophasé — le quotidien domestique</h4>
+        <p>Lave-linge, réfrigérateurs et climatiseurs (compresseurs), mixeurs et robots de cuisine, pompes de puisard domestiques, perceuses et petits outils électroportatifs, ventilateurs de bureau.</p>
+      </div>
+      <div class="card">
+        <h4>⚡ Synchrone — précision et grande puissance</h4>
+        <p>Gros alternateurs de centrales électriques, machines de levage exigeant une vitesse stable, servomoteurs en robotique et automatisation, horloges électriques et entraînements de précision.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. PANNES ET DIAGNOSTIC ============ -->
+<section id="pannes" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 05</span>
+    <h2>Pannes et diagnostic</h2>
+    <p class="kicker">Un diagnostic méthodique commence toujours par l'observation des symptômes, se poursuit par la recherche de causes probables, puis se confirme par des mesures instrumentées.</p>
+
+    <div class="subsection">
+      <h3>Symptômes courants</h3>
+      <ul class="diag-list">
+        <li><b>Surchauffe anormale</b>Carcasse brûlante au toucher, odeur de vernis chaud ; souvent liée à une surcharge, un défaut de ventilation ou un déséquilibre de phases.</li>
+        <li><b>Bruit anormal / bourdonnement</b>Bourdonnement grave à 50/100 Hz = souvent électrique (coupure de phase, déséquilibre) ; sifflement ou grincement = souvent mécanique (roulement).</li>
+        <li><b>Vibrations</b>Balourd rotor, désalignement d'accouplement, roulement usé, entrefer irrégulier.</li>
+        <li><b>Forte consommation de courant</b>Surcharge mécanique, roulement grippé, tension réseau trop basse, court-circuit partiel entre spires.</li>
+        <li><b>Le moteur ne démarre pas</b>Absence de tension, phase coupée, condensateur de démarrage HS (monophasé), protection thermique déclenchée, rotor bloqué.</li>
+        <li><b>Disjonction au démarrage ou en charge</b>Court-circuit à la masse, surcharge, réglage de protection thermique inadapté, démarrage direct sur charge trop importante.</li>
+        <li><b>Odeur de brûlé</b>Signe avancé de dégradation du vernis isolant — intervention urgente requise, risque de court-circuit imminent.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3>Causes fréquentes</h3>
+      <ul class="diag-list cause">
+        <li><b>Coupure de phase (marche en "monophasé forcé")</b>Fusible grillé, contact de contacteur défaillant, câble sectionné.</li>
+        <li><b>Bobinage en court-circuit ou à la masse</b>Isolant dégradé par la chaleur, l'humidité ou le vieillissement ; contact accidentel entre spires ou avec la carcasse.</li>
+        <li><b>Roulements usés</b>Manque de graissage, contamination, fin de vie normale, courants de palier (surtout sous variateur de fréquence).</li>
+        <li><b>Déséquilibre de tension entre phases</b>Charge mal répartie sur le réseau, connexion défectueuse.</li>
+        <li><b>Condensateur défaillant (monophasé)</b>Capacité dégradée dans le temps, surtension, surchauffe — le moteur peine à démarrer ou tourne à couple réduit.</li>
+        <li><b>Surcharge mécanique</b>Charge entraînée trop importante, blocage partiel, mauvais dimensionnement initial.</li>
+        <li><b>Problèmes de couplage</b>Erreur de câblage étoile/triangle par rapport à la tension réseau — voir la section dédiée.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3>Contrôles instrumentés</h3>
+      <div class="grid-3">
+        <div class="card">
+          <h4>🔍 Ohmmètre — continuité</h4>
+          <p>Vérifie que chaque enroulement forme un circuit continu (pas de coupure) et que les trois résistances de phase sont sensiblement égales (écart &lt; 5-10 % en général) sur un moteur triphasé.</p>
+        </div>
+        <div class="card">
+          <h4>🛡️ Mégohmmètre — isolement</h4>
+          <p>Mesure la résistance d'isolement entre chaque enroulement et la masse (carcasse). Une valeur nettement supérieure à 1 MΩ est généralement recherchée à froid ; une valeur faible signale un défaut d'isolement (humidité, vieillissement du vernis).</p>
+        </div>
+        <div class="card">
+          <h4>📎 Pince ampèremétrique</h4>
+          <p>Mesure le courant absorbé sur chaque phase en charge : un déséquilibre entre phases (souvent &gt; 10 %) indique un défaut de bobinage, d'alimentation ou de couplage.</p>
+        </div>
+        <div class="card">
+          <h4>🌀 Méthode du growler ("banc de recherche de court-circuit")</h4>
+          <p>Le rotor (ou stator) est posé sur un banc générant un champ alternatif ; une lame de scie ou une bande métallique posée sur les encoches vibre au droit d'une spire en court-circuit, révélant précisément l'encoche défectueuse.</p>
+        </div>
+        <div class="card">
+          <h4>🌡️ Contrôle thermographique</h4>
+          <p>Une caméra ou un pistolet infrarouge permet de repérer les points chauds (connexions desserrées, phase en surcharge) sans arrêter le moteur.</p>
+        </div>
+        <div class="card">
+          <h4>📈 Analyse vibratoire</h4>
+          <p>Un accéléromètre couplé à une analyse spectrale distingue balourd, désalignement, défaut de roulement et défaut électrique par leurs signatures fréquentielles caractéristiques.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. DÉMONTAGE ET RÉFECTION ============ -->
+<section id="demontage" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 06</span>
+    <h2>Démontage et réfection</h2>
+    <p class="kicker">Un démontage méthodique, avec repérage systématique de chaque pièce et connexion, conditionne la qualité et la rapidité du remontage.</p>
+
+    <div class="subsection">
+      <h3>Étapes de démontage</h3>
+      <ol class="steps">
+        <li><b>Consigner et débrancher</b> l'alimentation électrique (consignation LOTO), déconnecter le moteur de la charge entraînée.</li>
+        <li><b>Repérer</b> chaque câble, chaque flasque et leur orientation (marquage à la pointe à tracer ou peinture) avant toute dépose.</li>
+        <li><b>Déposer le ventilateur</b> de refroidissement et son capot arrière.</li>
+        <li><b>Déposer le flasque arrière</b> après desserrage des tirants d'assemblage.</li>
+        <li><b>Extraire le rotor</b> de la carcasse avec précaution, en le soutenant pour éviter tout contact avec les enroulements du stator (risque de rayure du bobinage).</li>
+        <li><b>Retirer le flasque avant</b> et libérer complètement le rotor.</li>
+        <li><b>Sortir les roulements</b> à l'aide d'un extracteur adapté (jamais au marteau directement sur la bague).</li>
+        <li><b>Nettoyer</b> toutes les pièces (dégraissant adapté, air comprimé sec) et <b>vérifier</b> visuellement l'état des enroulements, des roulements et des tôles.</li>
+      </ol>
+    </div>
+
+    <div class="subsection">
+      <h3>Remontage et bonnes pratiques</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Ordre de remontage</h4>
+          <p>Strictement inverse du démontage : roulements → flasque avant → rotor dans le stator → flasque arrière (aligné selon les repères) → ventilateur → capot → reconnexion électrique. Respecter les <b>couples de serrage</b> constructeur pour les tirants et les vis de flasque afin d'éviter tout désalignement ou fuite.</p>
+        </div>
+        <div class="card">
+          <h4>Remplacement des roulements</h4>
+          <p>Deux méthodes courantes pour monter un roulement neuf sans l'endommager :</p>
+          <ul>
+            <li><b>À chaud</b> : chauffer la bague intérieure (induction ou bain d'huile, ~80-100 °C) pour la dilater légèrement puis l'enfiler sans effort sur l'arbre.</li>
+            <li><b>À la presse</b> : pousser le roulement à l'aide d'un tube ou d'un mandrin prenant appui uniquement sur la bague intérieure (jamais sur la bague extérieure lors du montage sur arbre).</li>
+          </ul>
+          <p style="margin-top:8px;"><b>À proscrire absolument</b> : monter un roulement au marteau, en frappant directement sur la bague — cela crée des empreintes (brinelling) qui ruinent le roulement prématurément.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. BOBINAGE COMPLET ============ -->
+<section id="bobinage" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 07</span>
+    <h2>Bobinage complet</h2>
+    <p class="kicker">Le rebobinage est l'opération de réfection la plus délicate : elle exige rigueur dans le relevé des données existantes et précision dans l'exécution.</p>
+
+    <div class="subsection">
+      <h3>Notions de base</h3>
+      <div class="grid-3">
+        <div class="card"><h4>Encoche</h4><p>Rainure dans les tôles statoriques recevant les conducteurs d'une ou plusieurs bobines.</p></div>
+        <div class="card"><h4>Bobine</h4><p>Ensemble de spires de fil émaillé enroulées autour d'un même axe, insérées dans deux encoches distinctes.</p></div>
+        <div class="card"><h4>Pas polaire</h4><p>Distance angulaire (en nombre d'encoches) séparant deux pôles consécutifs de même polarité.</p></div>
+        <div class="card"><h4>Pas de bobinage</h4><p>Nombre d'encoches séparant les deux côtés actifs d'une même bobine — égal ou légèrement inférieur au pas polaire (bobinage "raccourci").</p></div>
+        <div class="card"><h4>Nombre de spires</h4><p>Tours de fil par bobine ; détermine directement la tension induite par spire et donc la tension nominale de l'enroulement.</p></div>
+        <div class="card"><h4>Diamètre du fil</h4><p>Choisi selon le courant nominal à véhiculer et la place disponible dans l'encoche.</p></div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Relevé des données avant démontage</h3>
+      <p>Avant de retirer le moindre fil, il est impératif de consigner :</p>
+      <ul class="diag-list">
+        <li><b>Nombre de spires par bobine</b> (compter précisément sur un ou deux groupes témoins avant destruction).</li>
+        <li><b>Pas de bobinage</b> (numéros des encoches occupées par chaque bobine).</li>
+        <li><b>Schéma des connexions</b> entre bobines (série, parallèle, groupes) et sens d'enroulement.</li>
+        <li><b>Répartition des bobines</b> par phase et par pôle, et diamètre du fil utilisé (à mesurer au micromètre après extraction d'un échantillon).</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3>Méthode de rebobinage</h3>
+      <ol class="steps">
+        <li><b>Isolation d'encoche</b> : poser le papier isolant (Nomex, Mylar ou équivalent) dans chaque encoche nettoyée.</li>
+        <li><b>Bobinage des couches</b> : enrouler chaque bobine au nombre de spires relevé, en respectant le sens et le pas d'origine.</li>
+        <li><b>Calage</b> : insérer des cales d'encoche pour maintenir les conducteurs en place et éviter les vibrations.</li>
+        <li><b>Isolation entre phases</b> : intercaler un isolant supplémentaire aux croisements entre enroulements de phases différentes, et à la masse au niveau des têtes de bobines.</li>
+        <li><b>Connexions</b> : réaliser les liaisons entre bobines selon le schéma relevé, souder ou sertir puis isoler chaque jonction.</li>
+        <li><b>Imprégnation</b> : tremper (ou enduire) l'ensemble du bobinage dans un vernis isolant pour combler les vides d'air, améliorer la tenue mécanique et l'évacuation thermique.</li>
+        <li><b>Cuisson au four</b> : polymériser le vernis selon la température et la durée préconisées par le fabricant (typiquement 120-160 °C, plusieurs heures).</li>
+      </ol>
+    </div>
+
+    <div class="subsection">
+      <h3>Calculs pratiques</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Tension par spire</h4>
+          <div class="formula" style="font-size:.92rem;">e/spire ≈ U enroulement / N spires</div>
+          <p>Utile pour vérifier la cohérence d'un rebobinage à tension différente : si l'on change la tension nominale, le nombre de spires doit varier proportionnellement.</p>
+        </div>
+        <div class="card">
+          <h4>Section de fil selon le courant</h4>
+          <div class="formula" style="font-size:.92rem;">S (mm²) ≈ I (A) / J</div>
+          <p>Avec J la densité de courant admissible, couramment de l'ordre de <b>4 à 6 A/mm²</b> pour un fil émaillé en usage général (à affiner selon la classe thermique et le refroidissement du moteur).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Cas particulier du moteur monophasé</h3>
+      <p>Le bobinage principal occupe généralement <b>2/3 des encoches</b> disponibles avec un fil de section plus importante (il porte le courant en permanence), tandis que l'auxiliaire occupe le tiers restant avec un fil plus fin, décalé d'environ 90° électriques par rapport au principal. Le sens de bobinage de l'auxiliaire par rapport au principal détermine le sens de rotation ; le condensateur se raccorde toujours en série avec l'enroulement auxiliaire, jamais avec le principal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. COUPLAGE ETOILE / TRIANGLE ============ -->
+<section id="couplage" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 08</span>
+    <h2>Couplage étoile / triangle</h2>
+    <p class="kicker">Un moteur triphasé standard présente six bornes sur sa plaque à bornes : U1-U2, V1-V2, W1-W2, correspondant aux extrémités des trois enroulements décalés de 120°. Deux façons de les relier entre elles définissent le couplage.</p>
+
+    <div class="grid-2">
+      <figure class="diagram-card">
+        <svg viewBox="0 0 240 220">
+          <g stroke="#0B2E4F" stroke-width="3" fill="none">
+            <line x1="120" y1="40" x2="120" y2="110"/>
+            <line x1="120" y1="110" x2="60" y2="170"/>
+            <line x1="120" y1="110" x2="180" y2="170"/>
+          </g>
+          <circle cx="120" cy="110" r="5" fill="#E8873A"/>
+          <g font-family="JetBrains Mono" font-size="12" fill="#0B2E4F" font-weight="700">
+            <text x="120" y="30" text-anchor="middle">U1</text>
+            <text x="46" y="188" text-anchor="middle">V1</text>
+            <text x="194" y="188" text-anchor="middle">W1</text>
+          </g>
+          <text x="120" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#C1651C">N (U2,V2,W2)</text>
+        </svg>
+        <figcaption><b>Couplage étoile (Y)</b> — U2, V2 et W2 réunis en un point neutre commun.</figcaption>
+      </figure>
+      <figure class="diagram-card">
+        <svg viewBox="0 0 240 220">
+          <polygon points="120,40 60,170 180,170" fill="none" stroke="#1E6FD9" stroke-width="3"/>
+          <g font-family="JetBrains Mono" font-size="11" fill="#1E6FD9" font-weight="700">
+            <text x="120" y="30" text-anchor="middle">U1</text>
+            <text x="46" y="188" text-anchor="middle">V1</text>
+            <text x="194" y="188" text-anchor="middle">W1</text>
+            <text x="94" y="100" text-anchor="middle">W2</text>
+            <text x="150" y="100" text-anchor="middle">U2</text>
+            <text x="120" y="182" text-anchor="middle">V2</text>
+          </g>
+        </svg>
+        <figcaption><b>Couplage triangle (Δ)</b> — U1-V2, V1-W2, W1-U2 : chaque borne relie deux enroulements.</figcaption>
+      </figure>
+    </div>
+
+    <div class="subsection">
+      <h3>Relations tension / courant</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Couplage</th><th>Tension par enroulement</th><th>Courant par enroulement</th><th>Notation</th></tr></thead>
+          <tbody>
+            <tr><td><b>Étoile (Y)</b></td><td>U réseau / √3</td><td>= courant de ligne</td><td>U2-V2-W2 reliés (neutre)</td></tr>
+            <tr><td><b>Triangle (Δ)</b></td><td>= tension réseau</td><td>I ligne / √3</td><td>U1-V2, V1-W2, W1-U2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Puissance électrique</h3>
+      <div class="formula">P = √3 · U · I · cos φ &nbsp;&nbsp;(triphasé)</div>
+      <div class="formula">P = U · I · cos φ &nbsp;&nbsp;(monophasé)</div>
+    </div>
+
+    <div class="subsection">
+      <h3>Choisir le couplage selon la plaque signalétique</h3>
+      <p>Une plaque indiquant par exemple <b>230 V / 400 V</b> signifie que chaque enroulement est prévu pour supporter <b>230 V</b>. Il faut alors :</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tension du réseau triphasé</th><th>Couplage à réaliser</th><th>Pourquoi</th></tr></thead>
+          <tbody>
+            <tr><td>230 V entre phases</td><td><b>Triangle (Δ)</b></td><td>Chaque enroulement reçoit directement la tension de ligne = 230 V, sa tension nominale.</td></tr>
+            <tr><td>400 V entre phases</td><td><b>Étoile (Y)</b></td><td>Chaque enroulement reçoit U/√3 = 400/1,73 ≈ 230 V, sa tension nominale.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:10px; font-size:.9rem; color:var(--ink-soft);">⚠️ Toujours vérifier les deux tensions indiquées sur la plaque signalétique du moteur (jamais un couplage "par défaut") — un couplage erroné expose à une surtension destructrice ou à une sous-alimentation chronique.</p>
+    </div>
+
+    <div class="subsection">
+      <h3>Le démarrage étoile-triangle</h3>
+      <p>Sur un réseau 400 V où le fonctionnement normal se fait en triangle, on peut démarrer temporairement le moteur en <b>étoile</b> : chaque enroulement ne reçoit alors que U/√3 ≈ 230 V, ce qui divise le courant et le couple de démarrage par environ 3 par rapport à un démarrage direct en triangle. Une fois le moteur lancé (généralement après quelques secondes), on bascule en triangle pour le régime nominal. Cette méthode simple et économique reste très utilisée pour limiter l'appel de courant au démarrage sur les moteurs de moyenne puissance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. SAVOIR PLUS ============ -->
+<section id="savoir-plus" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 09</span>
+    <h2>En savoir plus</h2>
+    <p class="kicker">Formules de conversion, lecture de plaque signalétique, glossaire et quiz d'auto-évaluation pour consolider les connaissances.</p>
+
+    <div class="subsection" id="formules">
+      <h3>Formules et conversions utiles</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Puissance</h4>
+          <p class="mono" style="font-size:.88rem;">1 HP (métrique) ≈ 0,736 kW<br>1 HP (mécanique UK/US) ≈ 0,746 kW<br>1 kW ≈ 1,341 HP</p>
+        </div>
+        <div class="card">
+          <h4>Couple ↔ puissance ↔ vitesse</h4>
+          <p class="mono" style="font-size:.88rem;">C (N·m) = 9550 × P (kW) / N (tr/min)<br>P (kW) = C (N·m) × N (tr/min) / 9550</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection" id="plaque">
+      <h3>Lire une plaque signalétique</h3>
+      <div class="grid-3">
+        <div class="card"><h4>P (kW / HP)</h4><p>Puissance mécanique nominale disponible sur l'arbre.</p></div>
+        <div class="card"><h4>U (V)</h4><p>Tension(s) nominale(s), souvent en double valeur (ex. 230/400 V) pour indiquer les deux couplages possibles.</p></div>
+        <div class="card"><h4>I (A)</h4><p>Courant nominal absorbé pour chaque tension/couplage correspondant.</p></div>
+        <div class="card"><h4>N (tr/min)</h4><p>Vitesse nominale en charge (donc légèrement inférieure à Ns pour un asynchrone).</p></div>
+        <div class="card"><h4>cos φ</h4><p>Facteur de puissance nominal, indique le déphasage entre tension et courant.</p></div>
+        <div class="card"><h4>IP / IK / Classe</h4><p>Indice de protection (poussière/eau), résistance aux chocs, et classe thermique de l'isolant (B, F, H…).</p></div>
+      </div>
+    </div>
+
+    <div class="subsection" id="glossaire">
+      <h3>Glossaire</h3>
+      <details class="gloss"><summary>Champ tournant</summary><p>Champ magnétique dont la direction tourne dans l'espace à vitesse constante, généré par des enroulements polyphasés alimentés par des courants déphasés.</p></details>
+      <details class="gloss"><summary>Glissement</summary><p>Écart relatif entre la vitesse du champ tournant (Ns) et celle du rotor (N) dans un moteur asynchrone.</p></details>
+      <details class="gloss"><summary>Entrefer</summary><p>Espace d'air séparant le stator du rotor.</p></details>
+      <details class="gloss"><summary>Cage d'écureuil</summary><p>Ensemble de barres conductrices court-circuitées par deux anneaux, formant le rotor de l'asynchrone à cage.</p></details>
+      <details class="gloss"><summary>Mégohmmètre</summary><p>Instrument mesurant la résistance d'isolement d'un enroulement, sous haute tension continue (souvent 500 V ou 1000 V).</p></details>
+      <details class="gloss"><summary>Growler</summary><p>Banc d'essai générant un champ alternatif pour localiser une spire en court-circuit dans un bobinage.</p></details>
+      <details class="gloss"><summary>Facteur de puissance (cos φ)</summary><p>Rapport entre la puissance active consommée et la puissance apparente ; indique le déphasage entre le courant et la tension.</p></details>
+      <details class="gloss"><summary>Pas de bobinage</summary><p>Nombre d'encoches séparant les deux côtés actifs d'une même bobine statorique.</p></details>
+    </div>
+
+    <div class="subsection" id="quiz">
+      <h3>Quiz d'auto-évaluation</h3>
+      <div id="quizContainer"></div>
+      <button class="btn" id="quizScoreBtn">Voir mon score</button>
+      <div id="quizScore"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="container footer-grid">
+    <div>
+      <h4>MotoGuide</h4>
+      <p style="max-width:44ch; color:#A9C2E0; font-size:.9rem;">Guide didactique conçu pour aider les maintenanciers et étudiants à maîtriser les moteurs synchrones, asynchrones triphasés et monophasés — de la théorie au dépannage sur chantier.</p>
+    </div>
+    <div>
+      <h4>Sommaire</h4>
+      <p style="font-size:.88rem;"><a href="#classification">Classification</a><br><a href="#stator-rotor">Stator &amp; rotor</a><br><a href="#pannes">Pannes &amp; diagnostic</a><br><a href="#couplage">Couplage Y/Δ</a><br><a href="#quiz">Quiz</a></p>
+    </div>
+    <div>
+      <h4>À propos de l'auteur</h4>
+      <p style="font-size:.88rem;">Adama Gueye<br>Étudiant en Maintenance des Systèmes Électromécaniques — École Polytechnique de Thiès<br><a href="mailto:adama.gueye.3304@gmail.com">adama.gueye.3304@gmail.com</a><br><a href="https://github.com/AdaMaths" target="_blank" rel="noopener">github.com/AdaMaths</a></p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Adama GUEYE. Tous droits réservés.</span>
+    <span>Portfolio professionnel — Physique Numérique &amp; Maintenance Électromécanique.</span>
+  </div>
+</footer>
+
+<script>
+/* ---------------- NAV DATA (used for mobile menu + search index) ---------------- */
+const navData = [
+  {label:"Accueil", id:"accueil"},
+  {label:"Classification", id:"classification", sub:[{label:"Vue d'ensemble", id:"classification"},{label:"Tableau comparatif", id:"tableau-comparatif"}]},
+  {label:"Stator & Rotor", id:"stator-rotor", sub:[{label:"Triphasé", id:"sr-triphase"},{label:"Synchrone", id:"sr-synchrone"},{label:"Monophasé", id:"sr-monophase"},{label:"Entrefer", id:"sr-entrefer"}]},
+  {label:"Fonctionnement", id:"fonctionnement", sub:[{label:"Champ tournant", id:"f-champ"},{label:"Glissement", id:"f-glissement"},{label:"Couple", id:"f-couple"},{label:"Moteur monophasé", id:"f-mono"},{label:"Moteur synchrone", id:"f-sync"}]},
+  {label:"Applications", id:"applications"},
+  {label:"Pannes & diagnostic", id:"pannes"},
+  {label:"Démontage & réfection", id:"demontage"},
+  {label:"Bobinage", id:"bobinage"},
+  {label:"Couplage Y/Δ", id:"couplage"},
+  {label:"Savoir plus", id:"savoir-plus", sub:[{label:"Formules", id:"formules"},{label:"Plaque signalétique", id:"plaque"},{label:"Glossaire", id:"glossaire"},{label:"Quiz", id:"quiz"}]}
+];
+
+/* Build mobile menu */
+const mobileList = document.getElementById('mobileNavList');
+navData.forEach((item,i)=>{
+  const wrap = document.createElement('div');
+  wrap.className = 'm-item';
+  if(item.sub){
+    wrap.innerHTML = `<button class="m-toggle" data-target="m-sub-${i}"><span>${item.label}</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="m-sub" id="m-sub-${i}">${item.sub.map(s=>`<a href="#${s.id}">${s.label}</a>`).join('')}</div>`;
+    wrap.querySelector('.m-toggle').addEventListener('click',()=>wrap.classList.toggle('open'));
+  } else {
+    wrap.innerHTML = `<a class="m-toggle leaf" href="#${item.id}" style="text-decoration:none; display:block;">${item.label}</a>`;
+  }
+  mobileList.appendChild(wrap);
+});
+
+/* Burger toggle */
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+burgerBtn.addEventListener('click',()=>{
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',()=> mobileMenu.classList.remove('open'));
+});
+
+/* ---------------- SEARCH INDEX ---------------- */
+const searchIndex = [
+  {t:"Accueil", id:"accueil", s:"Présentation du site, maintenanciers, étudiants"},
+  {t:"Classification des moteurs", id:"classification", s:"synchrone, asynchrone, triphasé, monophasé, universel"},
+  {t:"Tableau comparatif", id:"tableau-comparatif", s:"prix, vitesse, couple, maintenance, applications"},
+  {t:"Stator", id:"stator-rotor", s:"carcasse, tôles Fe-Si, encoches, enroulements"},
+  {t:"Stator triphasé", id:"sr-triphase", s:"trois enroulements décalés de 120°"},
+  {t:"Moteur synchrone — rotor", id:"sr-synchrone", s:"aimants permanents, bagues, balais, excitation"},
+  {t:"Moteur monophasé — enroulements", id:"sr-monophase", s:"principal, auxiliaire, condensateur, U1 U2 Z1 Z2"},
+  {t:"Rotor", id:"stator-rotor", s:"cage d'écureuil, bobiné à bagues, aimants permanents"},
+  {t:"Entrefer", id:"sr-entrefer", s:"espace d'air, valeur typique, couple"},
+  {t:"Champ tournant", id:"f-champ", s:"Ns = 60 f / p, vitesse de synchronisme"},
+  {t:"Glissement", id:"f-glissement", s:"g = (Ns - N) / Ns, vitesse réelle"},
+  {t:"Couple électromécanique", id:"f-couple", s:"C = P / ω, formule 9550"},
+  {t:"Moteur monophasé — démarrage", id:"f-mono", s:"pourquoi il ne démarre pas seul, inversion du sens"},
+  {t:"Moteur synchrone — fonctionnement", id:"f-sync", s:"démarrage asynchrone, excitation rotorique"},
+  {t:"Applications", id:"applications", s:"pompes, ventilateurs, électroménager, alternateurs"},
+  {t:"Pannes et diagnostic", id:"pannes", s:"surchauffe, vibration, bourdonnement, disjonction"},
+  {t:"Contrôles instrumentés", id:"pannes", s:"ohmmètre, mégohmmètre, pince ampèremétrique, growler"},
+  {t:"Démontage et réfection", id:"demontage", s:"extraction du rotor, roulements, extracteur"},
+  {t:"Remplacement des roulements", id:"demontage", s:"chauffe, presse, couple de serrage"},
+  {t:"Bobinage complet", id:"bobinage", s:"encoche, pas polaire, spires, imprégnation, vernis"},
+  {t:"Calculs de bobinage", id:"bobinage", s:"tension par spire, section de fil, densité de courant"},
+  {t:"Couplage étoile / triangle", id:"couplage", s:"U1 U2 V1 V2 W1 W2, neutre, tension, courant"},
+  {t:"Démarrage étoile-triangle", id:"couplage", s:"limitation du courant de démarrage"},
+  {t:"Formules et conversions", id:"formules", s:"HP, kW, couple, vitesse"},
+  {t:"Plaque signalétique", id:"plaque", s:"puissance, tension, courant, cos phi, IP"},
+  {t:"Glossaire", id:"glossaire", s:"définitions techniques"},
+  {t:"Quiz d'auto-évaluation", id:"quiz", s:"questions, corrections"}
+];
+
+function runSearch(query, resultsEl){
+  const q = query.trim().toLowerCase();
+  if(q.length < 2){ resultsEl.style.display='none'; resultsEl.innerHTML=''; return; }
+  const matches = searchIndex.filter(item => (item.t+' '+item.s).toLowerCase().includes(q));
+  if(matches.length === 0){
+    resultsEl.innerHTML = '<div class="none">Aucun résultat pour "'+query+'"</div>';
+  } else {
+    resultsEl.innerHTML = matches.slice(0,10).map(m=>`<a href="#${m.id}"><b>${m.t}</b><span>${m.s}</span></a>`).join('');
+  }
+  resultsEl.style.display='block';
+}
+
+function wireSearch(inputId, resultsId){
+  const input = document.getElementById(inputId);
+  const results = document.getElementById(resultsId);
+  if(!input) return;
+  input.addEventListener('input', ()=> runSearch(input.value, results));
+  input.addEventListener('focus', ()=> { if(input.value.length>=2) runSearch(input.value, results); });
+  document.addEventListener('click', (e)=>{
+    if(!input.contains(e.target) && !results.contains(e.target)){ results.style.display='none'; }
+  });
+  results.addEventListener('click', ()=>{ results.style.display='none'; input.value=''; if(mobileMenu.classList.contains('open')) mobileMenu.classList.remove('open'); });
+}
+wireSearch('searchDesktop','resultsDesktop');
+wireSearch('searchHero','resultsHero');
+wireSearch('searchMobile','resultsMobile');
+
+/* ---------------- QUIZ ---------------- */
+const quizData = [
+  {q:"Quelle est la vitesse de synchronisme d'un moteur 4 pôles (p = 2) sur un réseau à 50 Hz ?",
+   options:["750 tr/min","1500 tr/min","3000 tr/min","1000 tr/min"], correct:1,
+   explain:"Ns = 60 × f / p = 60 × 50 / 2 = 1500 tr/min."},
+  {q:"Que se passe-t-il si le glissement d'un moteur asynchrone devient nul (N = Ns) ?",
+   options:["Le couple devient maximal","Il n'y a plus de courant induit au rotor, donc plus de couple","Le moteur passe en survitesse","Rien de particulier"], correct:1,
+   explain:"Sans écart de vitesse, le rotor ne perçoit plus de variation de flux : aucun courant n'est induit, donc aucun couple n'est produit."},
+  {q:"Pourquoi un moteur monophasé à un seul enroulement ne démarre-t-il pas seul ?",
+   options:["Le champ produit est tournant mais trop faible","Le champ produit est pulsant, sans direction de rotation privilégiée","Le rotor est toujours bloqué mécaniquement","La fréquence est trop basse"], correct:1,
+   explain:"Un seul enroulement monophasé crée un champ pulsant décomposable en deux champs tournants opposés qui s'annulent au démarrage : aucun sens n'est privilégié."},
+  {q:"Sur un moteur dont la plaque indique 230 V / 400 V, quel couplage choisir sur un réseau triphasé 400 V ?",
+   options:["Triangle","Étoile","Peu importe","Aucun des deux, il faut un transformateur"], correct:1,
+   explain:"En étoile, chaque enroulement reçoit U/√3 = 400/1,73 ≈ 230 V, sa tension nominale."},
+  {q:"Quel instrument mesure la résistance d'isolement entre un enroulement et la masse ?",
+   options:["Ohmmètre","Pince ampèremétrique","Mégohmmètre","Growler"], correct:2,
+   explain:"Le mégohmmètre applique une haute tension continue pour mesurer la résistance d'isolement (souvent recherchée > 1 MΩ)."},
+  {q:"Dans un moteur synchrone, la vitesse du rotor en régime établi est :",
+   options:["Toujours inférieure à Ns", "Exactement égale à Ns", "Variable selon la charge", "Toujours supérieure à Ns"], correct:1,
+   explain:"Le rotor est verrouillé magnétiquement sur le champ tournant : glissement nul, N = Ns."},
+  {q:"Quel rôle joue le condensateur de démarrage dans un moteur monophasé ?",
+   options:["Filtrer les harmoniques du réseau","Déphaser le courant de l'enroulement auxiliaire pour créer un champ tournant au démarrage","Protéger le moteur contre les surtensions","Réduire la vitesse nominale"], correct:1,
+   explain:"En déphasant le courant de l'auxiliaire par rapport au principal, le condensateur crée la dissymétrie nécessaire pour lancer le rotor dans un sens précis."}
+];
+
+const quizContainer = document.getElementById('quizContainer');
+quizData.forEach((item, qi)=>{
+  const div = document.createElement('div');
+  div.className = 'quiz-q';
+  div.innerHTML = `<p class="q">${qi+1}. ${item.q}</p>` +
+    item.options.map((opt,oi)=>`<div class="quiz-opt" data-q="${qi}" data-o="${oi}">
+      <span>${String.fromCharCode(97+oi)})</span><span>${opt}</span></div>`).join('') +
+    `<div class="quiz-explain" id="explain-${qi}">${item.explain}</div>`;
+  quizContainer.appendChild(div);
+});
+
+quizContainer.addEventListener('click', (e)=>{
+  const opt = e.target.closest('.quiz-opt');
+  if(!opt) return;
+  const qi = +opt.dataset.q, oi = +opt.dataset.o;
+  const parent = opt.parentElement;
+  if(parent.dataset.answered) return;
+  parent.dataset.answered = "1";
+  const correctIndex = quizData[qi].correct;
+  parent.querySelectorAll('.quiz-opt').forEach(o=>{
+    const idx = +o.dataset.o;
+    if(idx === correctIndex) o.classList.add('correct');
+    else if(idx === oi) o.classList.add('incorrect');
+  });
+  document.getElementById('explain-'+qi).classList.add('show');
+});
+
+document.getElementById('quizScoreBtn').addEventListener('click', ()=>{
+  const qBlocks = document.querySelectorAll('.quiz-q');
+  let answered = 0, correct = 0;
+  qBlocks.forEach((block,qi)=>{
+    if(block.dataset.answered){
+      answered++;
+      if(block.querySelector('.quiz-opt.correct.incorrect')){} // no-op
+      if(!block.querySelector('.quiz-opt.incorrect')) correct++;
+    }
+  });
+  const scoreEl = document.getElementById('quizScore');
+  if(answered === 0){
+    scoreEl.textContent = "Répondez à au moins une question pour voir votre score.";
+  } else {
+    scoreEl.textContent = `Score : ${correct} / ${answered} question(s) répondue(s) correctement (sur ${quizData.length} au total).`;
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# PyCharm
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+*.swp
+*~
