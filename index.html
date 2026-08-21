@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MotoGuide — Tout comprendre sur les moteurs électriques</title>
-<meta name="description" content="Guide didactique complet pour maintenanciers et étudiants : moteurs synchrones, asynchrones triphasés et monophasés.">
+<title>MotoGuide — Moteurs & Transformateurs électriques</title>
+<meta name="description" content="Guide didactique complet pour maintenanciers et étudiants : moteurs synchrones, asynchrones triphasés et monophasés, transformateurs de puissance et de distribution.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -137,7 +137,7 @@ nav.primary{display:none;}
 @media (min-width:900px){.hero-grid{grid-template-columns:1.1fr .9fr;}}
 .hero h1{font-size:clamp(1.9rem,4.5vw,3rem); margin-bottom:.3em;}
 .hero h1 span{color:var(--copper);}
-.hero p.lead{font-size:1.05rem; color:var(--ink-soft); max-width:52ch;}
+.hero p.lead{font-size:1.05rem; color:var(--ink-soft); max-width:65ch;}
 .audience-pills{display:flex; gap:8px; flex-wrap:wrap; margin:18px 0 22px;}
 .pill{background:var(--panel); border:1px solid var(--line); padding:7px 14px; border-radius:20px; font-size:.82rem; font-weight:600; color:var(--navy);}
 .hero-search{position:relative; max-width:480px;}
@@ -252,9 +252,9 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
     <a href="#accueil" class="brand"><span class="dot"></span> MotoGuide</a>
     <nav class="primary" aria-label="Navigation principale">
       <div class="nav-item"><a class="nav-link" href="#accueil">Accueil</a></div>
-      <div class="nav-item"><a class="nav-link" href="#classification">Classification</a>
+      <div class="nav-item"><a class="nav-link" href="#classification">Moteurs</a>
         <div class="submenu">
-          <a href="#classification">Vue d'ensemble</a>
+          <a href="#classification">Classification</a>
           <a href="#tableau-comparatif">Tableau comparatif</a>
         </div>
       </div>
@@ -280,6 +280,17 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
       <div class="nav-item"><a class="nav-link" href="#demontage">Démontage</a></div>
       <div class="nav-item"><a class="nav-link" href="#bobinage">Bobinage</a></div>
       <div class="nav-item"><a class="nav-link" href="#couplage">Couplage Y/Δ</a></div>
+      <div class="nav-item"><a class="nav-link" href="#transformateurs">Transformateurs</a>
+        <div class="submenu">
+          <a href="#t-definition">Définition</a>
+          <a href="#t-constitution">Constitution</a>
+          <a href="#t-fonctionnement">Fonctionnement</a>
+          <a href="#t-relations">Relations</a>
+          <a href="#t-types">Types de transformateurs</a>
+          <a href="#t-pertes">Pertes &amp; rendement</a>
+          <a href="#t-diagnostic">Diagnostic</a>
+        </div>
+      </div>
       <div class="nav-item"><a class="nav-link" href="#savoir-plus">Savoir plus</a>
         <div class="submenu">
           <a href="#formules">Formules</a>
@@ -313,8 +324,8 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
   <div class="container hero-grid">
     <div>
       <span class="eyebrow">Guide de maintenance électromécanique</span>
-      <h1>Tout comprendre sur les <span>moteurs électriques</span></h1>
-      <p class="lead">Un site didactique conçu pour les maintenanciers et les étudiants : constitution, fonctionnement, pannes, bobinage et couplage des moteurs synchrones, asynchrones triphasés et monophasés — expliqués avec des schémas, des formules et des exemples chiffrés.</p>
+      <h1>Tout comprendre sur les <span>moteurs &amp; transformateurs</span></h1>
+      <p class="lead">Un site didactique conçu pour les maintenanciers et les étudiants : constitution, fonctionnement, pannes, bobinage et couplage des moteurs synchrones, asynchrones triphasés et monophasés, ainsi que les transformateurs de puissance, de distribution et de commande — expliqués avec des schémas, des formules et des exemples chiffrés.</p>
       <div class="audience-pills">
         <span class="pill">🔧 Maintenanciers</span>
         <span class="pill">🎓 Étudiants en électrotechnique</span>
@@ -322,7 +333,7 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
       </div>
       <div class="hero-search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchHero" placeholder="Ex : glissement, condensateur, étoile-triangle…" autocomplete="off">
+        <input type="text" id="searchHero" placeholder="Ex : glissement, condensateur, transformateur, étoile-triangle…" autocomplete="off">
         <div class="search-results" id="resultsHero" style="display:none;"></div>
       </div>
     </div>
@@ -360,8 +371,8 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
       <a class="qn-card" href="#demontage"><span class="num">06</span><span class="lbl">Démontage</span></a>
       <a class="qn-card" href="#bobinage"><span class="num">07</span><span class="lbl">Bobinage</span></a>
       <a class="qn-card" href="#couplage"><span class="num">08</span><span class="lbl">Couplage Y/Δ</span></a>
-      <a class="qn-card" href="#savoir-plus"><span class="num">09</span><span class="lbl">Formules &amp; quiz</span></a>
-      <a class="qn-card" href="#glossaire"><span class="num">10</span><span class="lbl">Glossaire</span></a>
+      <a class="qn-card" href="#transformateurs"><span class="num">09</span><span class="lbl">Transformateurs</span></a>
+      <a class="qn-card" href="#savoir-plus"><span class="num">10</span><span class="lbl">Formules &amp; quiz</span></a>
     </div>
   </div>
 </section>
@@ -627,26 +638,26 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
     <div class="subsection">
       <h3>Symptômes courants</h3>
       <ul class="diag-list">
-        <li><b>Surchauffe anormale</b>Carcasse brûlante au toucher, odeur de vernis chaud ; souvent liée à une surcharge, un défaut de ventilation ou un déséquilibre de phases.</li>
-        <li><b>Bruit anormal / bourdonnement</b>Bourdonnement grave à 50/100 Hz = souvent électrique (coupure de phase, déséquilibre) ; sifflement ou grincement = souvent mécanique (roulement).</li>
-        <li><b>Vibrations</b>Balourd rotor, désalignement d'accouplement, roulement usé, entrefer irrégulier.</li>
-        <li><b>Forte consommation de courant</b>Surcharge mécanique, roulement grippé, tension réseau trop basse, court-circuit partiel entre spires.</li>
-        <li><b>Le moteur ne démarre pas</b>Absence de tension, phase coupée, condensateur de démarrage HS (monophasé), protection thermique déclenchée, rotor bloqué.</li>
-        <li><b>Disjonction au démarrage ou en charge</b>Court-circuit à la masse, surcharge, réglage de protection thermique inadapté, démarrage direct sur charge trop importante.</li>
-        <li><b>Odeur de brûlé</b>Signe avancé de dégradation du vernis isolant — intervention urgente requise, risque de court-circuit imminent.</li>
+        <li><b>Surchauffe anormale</b> Carcasse brûlante au toucher, odeur de vernis chaud ; souvent liée à une surcharge, un défaut de ventilation ou un déséquilibre de phases.</li>
+        <li><b>Bruit anormal / bourdonnement</b> Bourdonnement grave à 50/100 Hz = souvent électrique (coupure de phase, déséquilibre) ; sifflement ou grincement = souvent mécanique (roulement).</li>
+        <li><b>Vibrations</b> Balourd rotor, désalignement d'accouplement, roulement usé, entrefer irrégulier.</li>
+        <li><b>Forte consommation de courant</b> Surcharge mécanique, roulement grippé, tension réseau trop basse, court-circuit partiel entre spires.</li>
+        <li><b>Le moteur ne démarre pas</b> Absence de tension, phase coupée, condensateur de démarrage HS (monophasé), protection thermique déclenchée, rotor bloqué.</li>
+        <li><b>Disjonction au démarrage ou en charge</b> Court-circuit à la masse, surcharge, réglage de protection thermique inadapté, démarrage direct sur charge trop importante.</li>
+        <li><b>Odeur de brûlé</b> Signe avancé de dégradation du vernis isolant — intervention urgente requise, risque de court-circuit imminent.</li>
       </ul>
     </div>
 
     <div class="subsection">
       <h3>Causes fréquentes</h3>
       <ul class="diag-list cause">
-        <li><b>Coupure de phase (marche en "monophasé forcé")</b>Fusible grillé, contact de contacteur défaillant, câble sectionné.</li>
-        <li><b>Bobinage en court-circuit ou à la masse</b>Isolant dégradé par la chaleur, l'humidité ou le vieillissement ; contact accidentel entre spires ou avec la carcasse.</li>
-        <li><b>Roulements usés</b>Manque de graissage, contamination, fin de vie normale, courants de palier (surtout sous variateur de fréquence).</li>
-        <li><b>Déséquilibre de tension entre phases</b>Charge mal répartie sur le réseau, connexion défectueuse.</li>
-        <li><b>Condensateur défaillant (monophasé)</b>Capacité dégradée dans le temps, surtension, surchauffe — le moteur peine à démarrer ou tourne à couple réduit.</li>
-        <li><b>Surcharge mécanique</b>Charge entraînée trop importante, blocage partiel, mauvais dimensionnement initial.</li>
-        <li><b>Problèmes de couplage</b>Erreur de câblage étoile/triangle par rapport à la tension réseau — voir la section dédiée.</li>
+        <li><b>Coupure de phase (marche en "monophasé forcé")</b> Fusible grillé, contact de contacteur défaillant, câble sectionné.</li>
+        <li><b>Bobinage en court-circuit ou à la masse</b> Isolant dégradé par la chaleur, l'humidité ou le vieillissement ; contact accidentel entre spires ou avec la carcasse.</li>
+        <li><b>Roulements usés</b> Manque de graissage, contamination, fin de vie normale, courants de palier (surtout sous variateur de fréquence).</li>
+        <li><b>Déséquilibre de tension entre phases</b> Charge mal répartie sur le réseau, connexion défectueuse.</li>
+        <li><b>Condensateur défaillant (monophasé)</b> Capacité dégradée dans le temps, surtension, surchauffe — le moteur peine à démarrer ou tourne à couple réduit.</li>
+        <li><b>Surcharge mécanique</b> Charge entraînée trop importante, blocage partiel, mauvais dimensionnement initial.</li>
+        <li><b>Problèmes de couplage</b> Erreur de câblage étoile/triangle par rapport à la tension réseau — voir la section dédiée.</li>
       </ul>
     </div>
 
@@ -872,10 +883,219 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
   </div>
 </section>
 
-<!-- ============ 10. SAVOIR PLUS ============ -->
-<section id="savoir-plus" class="block">
+<!-- ============ 10. TRANSFORMATEURS ============ -->
+<section id="transformateurs" class="block">
   <div class="container">
     <span class="eyebrow">Section 09</span>
+    <h2>Transformateurs électriques</h2>
+    <p class="kicker">Les transformateurs sont des machines électriques statiques essentielles dans la production, le transport, la distribution et l'utilisation de l'énergie électrique. Ils permettent de modifier les niveaux de tension et de courant tout en conservant la fréquence.</p>
+
+    <div class="subsection" id="t-definition">
+      <h3>Définition du transformateur</h3>
+      <p>Un transformateur est une machine électrique statique qui transfère une énergie électrique alternative d'un circuit vers un autre, généralement à la même fréquence, en modifiant le niveau de tension et de courant.</p>
+      <p>Son fonctionnement repose sur le phénomène d'<b>induction électromagnétique</b>. Il permet notamment :</p>
+      <ul class="diag-list">
+        <li><b>Augmenter une tension</b> pour le transport de l'énergie sur de longues distances.</li>
+        <li><b>Diminuer une tension</b> pour la distribution et l'utilisation par les consommateurs.</li>
+        <li><b>Isoler électriquement</b> deux circuits pour des raisons de sécurité.</li>
+        <li><b>Adapter une impédance</b> entre une source et une charge.</li>
+        <li><b>Mesurer des tensions et des courants</b> élevés avec des appareils de mesure standard.</li>
+        <li><b>Alimenter des circuits</b> de commande et de puissance à des tensions adaptées.</li>
+      </ul>
+      <p>Contrairement au moteur électrique, le transformateur ne possède aucune pièce mobile. Il ne convertit donc pas l'énergie électrique en énergie mécanique.</p>
+    </div>
+
+    <div class="subsection" id="t-constitution">
+      <h3>Constitution générale</h3>
+      <p>Un transformateur classique est constitué principalement de :</p>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Éléments principaux</h4>
+          <ul>
+            <li><b>Circuit magnétique</b> : réalisé avec des tôles ferromagnétiques isolées entre elles pour guider le flux et réduire les pertes.</li>
+            <li><b>Enroulement primaire</b> : relié à la source d'alimentation.</li>
+            <li><b>Enroulement secondaire</b> : relié à la charge.</li>
+            <li><b>Isolation électrique</b> : entre les enroulements et entre les spires.</li>
+            <li><b>Bornes de raccordement</b> : pour les connexions électriques.</li>
+            <li><b>Carcasse ou cuve</b> : selon le type de transformateur.</li>
+            <li><b>Système de refroidissement</b> : air, huile, radiateurs.</li>
+            <li><b>Dispositifs de protection</b> : relais Buchholz, reniflard, indicateurs de niveau.</li>
+          </ul>
+        </div>
+        <figure class="diagram-card">
+          <svg viewBox="0 0 260 260">
+            <rect x="40" y="40" width="180" height="180" fill="#EBF1F9" stroke="#DCE4EF" stroke-width="2"/>
+            <rect x="60" y="60" width="40" height="140" fill="#0B2E4F" opacity="0.3"/>
+            <rect x="160" y="60" width="40" height="140" fill="#1E6FD9" opacity="0.3"/>
+            <g stroke="#0B2E4F" stroke-width="3" fill="none">
+              <path d="M70 80 h20 M70 100 h20 M70 120 h20 M70 140 h20 M70 160 h20"/>
+              <path d="M170 80 h20 M170 100 h20 M170 120 h20 M170 140 h20 M170 160 h20"/>
+            </g>
+            <text x="80" y="50" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#0B2E4F" font-weight="700">Primaire</text>
+            <text x="180" y="50" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1E6FD9" font-weight="700">Secondaire</text>
+            <rect x="90" y="90" width="80" height="80" fill="none" stroke="#E8873A" stroke-width="2" stroke-dasharray="4 4"/>
+            <text x="130" y="135" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#C1651C">Circuit magnétique</text>
+          </svg>
+          <figcaption>Schéma simplifié : enroulements primaire et secondaire autour d'un circuit magnétique commun.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="subsection" id="t-fonctionnement">
+      <h3>Principe de fonctionnement</h3>
+      <p>Lorsque l'enroulement primaire est alimenté par une tension alternative, un courant alternatif circule dans ses spires. Ce courant produit un flux magnétique variable dans le circuit magnétique.</p>
+      <p>Ce flux variable traverse l'enroulement secondaire et y induit une force électromotrice selon la loi de Faraday-Lenz.</p>
+      <p>Le transfert d'énergie s'effectue donc par l'intermédiaire du champ magnétique, sans liaison électrique directe entre le primaire et le secondaire dans le cas d'un transformateur classique.</p>
+      <p>Le fonctionnement peut être résumé ainsi :</p>
+      <ol class="steps">
+        <li><b>La source</b> fournit une tension alternative au primaire.</li>
+        <li><b>Le courant primaire</b> crée un flux magnétique variable.</li>
+        <li><b>Le flux</b> circule dans le circuit magnétique.</li>
+        <li><b>Le flux traverse</b> les spires secondaires.</li>
+        <li><b>Une tension est induite</b> au secondaire.</li>
+        <li><b>La charge</b> reçoit une énergie électrique adaptée.</li>
+      </ol>
+    </div>
+
+    <div class="subsection" id="t-relations">
+      <h3>Relations fondamentales</h3>
+      <p>Pour un transformateur idéal :</p>
+      <div class="formula">U₁ / U₂ = N₁ / N₂</div>
+      <p>Avec :</p>
+      <ul>
+        <li><b>U₁</b> : tension primaire.</li>
+        <li><b>U₂</b> : tension secondaire.</li>
+        <li><b>N₁</b> : nombre de spires du primaire.</li>
+        <li><b>N₂</b> : nombre de spires du secondaire.</li>
+      </ul>
+      <p>La relation des courants est :</p>
+      <div class="formula">I₁ / I₂ = N₂ / N₁</div>
+      <p>Pour un transformateur idéal, la puissance apparente est conservée :</p>
+      <div class="formula">S₁ ≈ S₂</div>
+      <p>Ainsi :</p>
+      <div class="formula">U₁ · I₁ ≈ U₂ · I₂</div>
+      <p>Un transformateur élévateur augmente la tension et diminue le courant. Un transformateur abaisseur diminue la tension et augmente le courant.</p>
+    </div>
+
+    <div class="subsection" id="t-types">
+      <h3>Types de transformateurs</h3>
+      <div class="grid-3">
+        <div class="card">
+          <h4>🔼 Transformateur élévateur</h4>
+          <p>N₂ &gt; N₁, donc U₂ &gt; U₁. Utilisé pour le transport de l'énergie électrique afin de réduire les pertes dans les lignes haute tension.</p>
+          <span class="badge blue">Transport HT</span>
+        </div>
+        <div class="card">
+          <h4>🔽 Transformateur abaisseur</h4>
+          <p>N₂ &lt; N₁, donc U₂ &lt; U₁. Utilisé pour la distribution et l'alimentation des installations domestiques et industrielles.</p>
+          <span class="badge orange">Distribution BT</span>
+        </div>
+        <div class="card">
+          <h4>🛡️ Transformateur d'isolement</h4>
+          <p>U₁ ≈ U₂. Sépare électriquement deux circuits pour la sécurité des personnes et des équipements.</p>
+          <span class="badge navy">Sécurité</span>
+        </div>
+        <div class="card">
+          <h4>⚡ Transformateur triphasé</h4>
+          <p>Trois colonnes magnétiques, couplages Y/Y, Δ/Δ, Y/Δ, Δ/Y, Z. Utilisé dans les réseaux de production et de distribution.</p>
+          <span class="badge blue">Réseau triphasé</span>
+        </div>
+        <div class="card">
+          <h4>🏭 Transformateur de puissance</h4>
+          <p>Cuve à huile, radiateurs, relais Buchholz. Utilisé dans les centrales et les postes de transformation haute tension.</p>
+          <span class="badge navy">Haute puissance</span>
+        </div>
+        <div class="card">
+          <h4>🏘️ Transformateur de distribution</h4>
+          <p>Abaisse la moyenne tension vers la basse tension (ex: 20 kV / 400 V). Alimente les consommateurs finaux.</p>
+          <span class="badge orange">Distribution</span>
+        </div>
+        <div class="card">
+          <h4>🎛️ Transformateur de commande</h4>
+          <p>Alimente les circuits de commande (12 V, 24 V, 48 V, 110 V, 230 V) dans les armoires électriques.</p>
+          <span class="badge blue">Commande</span>
+        </div>
+        <div class="card">
+          <h4>📊 Transformateur de courant (TC)</h4>
+          <p>Permet de mesurer un courant élevé avec un appareil standard. Le secondaire ne doit jamais être ouvert sous charge.</p>
+          <span class="badge navy">Mesure</span>
+        </div>
+        <div class="card">
+          <h4>📈 Transformateur de tension (TT)</h4>
+          <p>Réduit une haute tension pour la mesure et la protection. Utilisé dans les réseaux haute tension.</p>
+          <span class="badge orange">Mesure HT</span>
+        </div>
+        <div class="card">
+          <h4>🔄 Autotransformateur</h4>
+          <p>Un seul enroulement avec prises. Plus compact et économique, mais pas d'isolation galvanique.</p>
+          <span class="badge blue">Variac</span>
+        </div>
+        <div class="card">
+          <h4>🛢️ Transformateur à huile</h4>
+          <p>Enroulements immergés dans l'huile isolante. Excellente isolation et refroidissement. Nécessite un entretien régulier.</p>
+          <span class="badge navy">Huile</span>
+        </div>
+        <div class="card">
+          <h4>💨 Transformateur sec</h4>
+          <p>Isolation par résine ou vernis. Pas d'huile, risque d'incendie réduit. Installation possible à l'intérieur des bâtiments.</p>
+          <span class="badge orange">Sec</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection" id="t-pertes">
+      <h3>Pertes et rendement</h3>
+      <p>Un transformateur réel présente plusieurs types de pertes :</p>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Pertes cuivre</h4>
+          <p>Elles sont dues à la résistance des enroulements :</p>
+          <div class="formula" style="font-size:.92rem;">P_J = R · I²</div>
+          <p>Elles augmentent fortement avec le courant et provoquent un échauffement des bobinages.</p>
+        </div>
+        <div class="card">
+          <h4>Pertes fer</h4>
+          <p>Elles comprennent :</p>
+          <ul>
+            <li>Les pertes par <b>hystérésis</b>.</li>
+            <li>Les pertes par <b>courants de Foucault</b>.</li>
+          </ul>
+          <p>Les tôles feuilletées et isolées réduisent les courants de Foucault.</p>
+        </div>
+      </div>
+      <p style="margin-top:18px;">Le rendement est défini par :</p>
+      <div class="formula">η = (P₂ / P₁) × 100</div>
+      <p>Avec P₁ la puissance absorbée au primaire et P₂ la puissance disponible au secondaire. Un transformateur de puissance correctement dimensionné peut atteindre un rendement très élevé, mais il n'est jamais égal à 100 % en pratique.</p>
+    </div>
+
+    <div class="subsection" id="t-diagnostic">
+      <h3>Diagnostic et maintenance</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Symptôme</th><th>Causes possibles</th><th>Contrôles à effectuer</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Transformateur très chaud</b></td><td>Surcharge, ventilation insuffisante, court-circuit partiel</td><td>Mesure du courant, contrôle thermique, mesure d'isolement</td></tr>
+            <tr><td><b>Bruit anormal</b></td><td>Tôles desserrées, surcharge, vibrations</td><td>Contrôle mécanique et acoustique</td></tr>
+            <tr><td><b>Tension secondaire faible</b></td><td>Surcharge, mauvais rapport, chute de tension</td><td>Mesure à vide et en charge</td></tr>
+            <tr><td><b>Fusible primaire déclenché</b></td><td>Court-circuit, défaut d'isolement, surcharge</td><td>Mégohmmètre, continuité et inspection</td></tr>
+            <tr><td><b>Huile qui fuit</b></td><td>Joint détérioré, cuve fissurée</td><td>Inspection visuelle et contrôle du niveau</td></tr>
+            <tr><td><b>Odeur de brûlé</b></td><td>Échauffement excessif ou isolation dégradée</td><td>Mise hors tension immédiate et contrôle complet</td></tr>
+            <tr><td><b>Absence de tension secondaire</b></td><td>Enroulement coupé, protection déclenchée, connexion desserrée</td><td>Contrôle de continuité et des bornes</td></tr>
+            <tr><td><b>Déclenchement du relais Buchholz</b></td><td>Défaut interne, dégagement de gaz, baisse d'huile</td><td>Mise hors service et analyse spécialisée</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:18px;"><b>⚠️ Sécurité importante :</b> Le secondaire d'un transformateur de courant ne doit jamais être laissé ouvert lorsque le primaire est parcouru par un courant. Une tension dangereusement élevée peut apparaître au secondaire.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. SAVOIR PLUS ============ -->
+<section id="savoir-plus" class="block">
+  <div class="container">
+    <span class="eyebrow">Section 10</span>
     <h2>En savoir plus</h2>
     <p class="kicker">Formules de conversion, lecture de plaque signalétique, glossaire et quiz d'auto-évaluation pour consolider les connaissances.</p>
 
@@ -889,6 +1109,14 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
         <div class="card">
           <h4>Couple ↔ puissance ↔ vitesse</h4>
           <p class="mono" style="font-size:.88rem;">C (N·m) = 9550 × P (kW) / N (tr/min)<br>P (kW) = C (N·m) × N (tr/min) / 9550</p>
+        </div>
+        <div class="card">
+          <h4>Transformateur</h4>
+          <p class="mono" style="font-size:.88rem;">U₁ / U₂ = N₁ / N₂<br>I₁ / I₂ = N₂ / N₁<br>S₁ ≈ S₂</p>
+        </div>
+        <div class="card">
+          <h4>Rendement</h4>
+          <p class="mono" style="font-size:.88rem;">η = (P₂ / P₁) × 100<br>Pertes totales = Pertes cuivre + Pertes fer</p>
         </div>
       </div>
     </div>
@@ -915,6 +1143,10 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
       <details class="gloss"><summary>Growler</summary><p>Banc d'essai générant un champ alternatif pour localiser une spire en court-circuit dans un bobinage.</p></details>
       <details class="gloss"><summary>Facteur de puissance (cos φ)</summary><p>Rapport entre la puissance active consommée et la puissance apparente ; indique le déphasage entre le courant et la tension.</p></details>
       <details class="gloss"><summary>Pas de bobinage</summary><p>Nombre d'encoches séparant les deux côtés actifs d'une même bobine statorique.</p></details>
+      <details class="gloss"><summary>Transformateur élévateur</summary><p>Transformateur dont la tension secondaire est supérieure à la tension primaire (N₂ &gt; N₁).</p></details>
+      <details class="gloss"><summary>Transformateur abaisseur</summary><p>Transformateur dont la tension secondaire est inférieure à la tension primaire (N₂ &lt; N₁).</p></details>
+      <details class="gloss"><summary>Relais Buchholz</summary><p>Dispositif de protection des transformateurs à huile, détectant les défauts internes par analyse des gaz dissous.</p></details>
+      <details class="gloss"><summary>Transformateur de courant</summary><p>Appareil de mesure permettant de réduire un courant élevé à une valeur mesurable standard (généralement 5 A ou 1 A).</p></details>
     </div>
 
     <div class="subsection" id="quiz">
@@ -931,11 +1163,11 @@ mark{background:#FCEEE1; color:var(--copper-dark); padding:0 2px; border-radius:
   <div class="container footer-grid">
     <div>
       <h4>MotoGuide</h4>
-      <p style="max-width:44ch; color:#A9C2E0; font-size:.9rem;">Guide didactique conçu pour aider les maintenanciers et étudiants à maîtriser les moteurs synchrones, asynchrones triphasés et monophasés — de la théorie au dépannage sur chantier.</p>
+      <p style="max-width:44ch; color:#A9C2E0; font-size:.9rem;">Guide didactique conçu pour aider les maintenanciers et étudiants à maîtriser les moteurs synchrones, asynchrones triphasés et monophasés, ainsi que les transformateurs électriques — de la théorie au dépannage sur chantier.</p>
     </div>
     <div>
       <h4>Sommaire</h4>
-      <p style="font-size:.88rem;"><a href="#classification">Classification</a><br><a href="#stator-rotor">Stator &amp; rotor</a><br><a href="#pannes">Pannes &amp; diagnostic</a><br><a href="#couplage">Couplage Y/Δ</a><br><a href="#quiz">Quiz</a></p>
+      <p style="font-size:.88rem;"><a href="#classification">Classification</a><br><a href="#stator-rotor">Stator &amp; rotor</a><br><a href="#pannes">Pannes &amp; diagnostic</a><br><a href="#transformateurs">Transformateurs</a><br><a href="#quiz">Quiz</a></p>
     </div>
     <div>
       <h4>À propos de l'auteur</h4>
@@ -960,6 +1192,7 @@ const navData = [
   {label:"Démontage & réfection", id:"demontage"},
   {label:"Bobinage", id:"bobinage"},
   {label:"Couplage Y/Δ", id:"couplage"},
+  {label:"Transformateurs", id:"transformateurs", sub:[{label:"Définition", id:"t-definition"},{label:"Constitution", id:"t-constitution"},{label:"Fonctionnement", id:"t-fonctionnement"},{label:"Relations", id:"t-relations"},{label:"Types", id:"t-types"},{label:"Pertes & rendement", id:"t-pertes"},{label:"Diagnostic", id:"t-diagnostic"}]},
   {label:"Savoir plus", id:"savoir-plus", sub:[{label:"Formules", id:"formules"},{label:"Plaque signalétique", id:"plaque"},{label:"Glossaire", id:"glossaire"},{label:"Quiz", id:"quiz"}]}
 ];
 
@@ -1013,7 +1246,24 @@ const searchIndex = [
   {t:"Calculs de bobinage", id:"bobinage", s:"tension par spire, section de fil, densité de courant"},
   {t:"Couplage étoile / triangle", id:"couplage", s:"U1 U2 V1 V2 W1 W2, neutre, tension, courant"},
   {t:"Démarrage étoile-triangle", id:"couplage", s:"limitation du courant de démarrage"},
-  {t:"Formules et conversions", id:"formules", s:"HP, kW, couple, vitesse"},
+  {t:"Transformateurs", id:"transformateurs", s:"définition, constitution, fonctionnement, types"},
+  {t:"Transformateur élévateur", id:"t-types", s:"N2 > N1, transport haute tension"},
+  {t:"Transformateur abaisseur", id:"t-types", s:"N2 < N1, distribution basse tension"},
+  {t:"Transformateur d'isolement", id:"t-types", s:"séparation électrique, sécurité"},
+  {t:"Transformateur triphasé", id:"t-types", s:"trois colonnes, couplages Y Y, delta delta"},
+  {t:"Transformateur de puissance", id:"t-types", s:"cuve à huile, relais Buchholz, haute tension"},
+  {t:"Transformateur de distribution", id:"t-types", s:"20 kV 400 V, consommateurs finaux"},
+  {t:"Transformateur de commande", id:"t-types", s:"12 V, 24 V, 48 V, armoires électriques"},
+  {t:"Transformateur de courant", id:"t-types", s:"TC, mesure, secondaire jamais ouvert"},
+  {t:"Transformateur de tension", id:"t-types", s:"TT, mesure haute tension"},
+  {t:"Autotransformateur", id:"t-types", s:"variac, pas d'isolation galvanique"},
+  {t:"Transformateur à huile", id:"t-types", s:"refroidissement, isolation, entretien"},
+  {t:"Transformateur sec", id:"t-types", s:"résine, vernis, pas d'huile"},
+  {t:"Pertes cuivre", id:"t-pertes", s:"R I carré, échauffement"},
+  {t:"Pertes fer", id:"t-pertes", s:"hystérésis, courants de Foucault"},
+  {t:"Rendement transformateur", id:"t-pertes", s:"P2 sur P1, efficacité"},
+  {t:"Diagnostic transformateur", id:"t-diagnostic", s:"surchauffe, bruit, fuite d'huile, Buchholz"},
+  {t:"Formules et conversions", id:"formules", s:"HP, kW, couple, vitesse, transformateur"},
   {t:"Plaque signalétique", id:"plaque", s:"puissance, tension, courant, cos phi, IP"},
   {t:"Glossaire", id:"glossaire", s:"définitions techniques"},
   {t:"Quiz d'auto-évaluation", id:"quiz", s:"questions, corrections"}
@@ -1068,7 +1318,16 @@ const quizData = [
    explain:"Le rotor est verrouillé magnétiquement sur le champ tournant : glissement nul, N = Ns."},
   {q:"Quel rôle joue le condensateur de démarrage dans un moteur monophasé ?",
    options:["Filtrer les harmoniques du réseau","Déphaser le courant de l'enroulement auxiliaire pour créer un champ tournant au démarrage","Protéger le moteur contre les surtensions","Réduire la vitesse nominale"], correct:1,
-   explain:"En déphasant le courant de l'auxiliaire par rapport au principal, le condensateur crée la dissymétrie nécessaire pour lancer le rotor dans un sens précis."}
+   explain:"En déphasant le courant de l'auxiliaire par rapport au principal, le condensateur crée la dissymétrie nécessaire pour lancer le rotor dans un sens précis."},
+  {q:"Quelle est la relation fondamentale d'un transformateur idéal ?",
+   options:["U1 / U2 = N2 / N1","U1 / U2 = N1 / N2","I1 / I2 = N1 / N2","P1 = P2 + pertes"], correct:1,
+   explain:"Le rapport des tensions est égal au rapport des nombres de spires : U1 / U2 = N1 / N2."},
+  {q:"Que se passe-t-il si le secondaire d'un transformateur de courant est ouvert sous charge ?",
+   options:["Rien de particulier","Une tension dangereusement élevée peut apparaître","Le transformateur s'arrête","Le courant augmente"], correct:1,
+   explain:"Un TC ne doit jamais avoir son secondaire ouvert sous charge : une tension très élevée peut apparaître, dangereuse pour les personnes et l'équipement."},
+  {q:"Quel type de transformateur est utilisé pour le transport de l'énergie électrique sur de longues distances ?",
+   options:["Transformateur abaisseur","Transformateur élévateur","Transformateur d'isolement","Autotransformateur"], correct:1,
+   explain:"Un transformateur élévateur augmente la tension pour réduire les pertes par effet Joule dans les lignes de transport."}
 ];
 
 const quizContainer = document.getElementById('quizContainer');
@@ -1114,7 +1373,3 @@ document.getElementById('quizScoreBtn').addEventListener('click', ()=>{
   } else {
     scoreEl.textContent = `Score : ${correct} / ${answered} question(s) répondue(s) correctement (sur ${quizData.length} au total).`;
   }
-});
-</script>
-</body>
-</html>
